@@ -1,0 +1,57 @@
+﻿@model homeFinanceMVC.Models.Cuenta
+@using homeFinanceMVC.Models
+
+@{
+    Layout = null;
+
+    UsuarioDAO uDAO = new UsuarioDAO();
+    Usuario u = uDAO.ObtenerUsuarioPorId(@Model.IdUsuario);
+}
+
+<div class="form-horizontal">
+    <div class="container">
+        <br />
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Descripción</label>
+            <div class="col-md-10">
+                @Html.TextBoxFor(x => x.DescCuenta, new { @readonly = "readonly", @class = "inputstl" })
+            </div>
+        </div>
+
+        
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Usuario</label>
+            <div class="col-md-10">
+                @Html.Label(u.Nombre, new { @class = "inputstl bor" })
+            </div>
+        </div>
+
+        <hr />
+
+        @Html.ActionLink("Confirma", "DelCuenta", new { id = Model.IdCuenta }, new { @class = "btn btn-danger" })
+        @Html.ActionLink("Cancelar", "ManupularDatosCuenta", "Cuenta", null, new { @class = "btn btn-warning" })
+
+    </div>
+</div>
+<style>
+    .marg {
+        margin: 0 10px 0 2px;
+    }
+
+    .inputstl {
+        padding: 9px;
+        border: solid 1px #4B718B;
+        outline: 0;
+        background: -webkit-gradient(linear, left top, left 25, from(#FFFFFF), color-stop(4%, #CDDBE4), to(#FFFFFF));
+        background: -moz-linear-gradient(top, #FFFFFF, #CDDBE4 1px, #FFFFFF 25px);
+        box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+        -moz-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+        -webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+    }
+
+    .bor {
+        border: none;
+    }
+</style>

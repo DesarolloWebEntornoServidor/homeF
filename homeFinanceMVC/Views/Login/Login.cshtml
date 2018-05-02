@@ -1,0 +1,133 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+
+    if (TempData["mesaje"] != null)
+    {
+        <input hidden="hidden" value="10" id="mens" />
+    }
+
+    if (TempData["inactivo"] != null)
+    {
+        <input hidden="hidden" value="10" id="inac" />
+    }
+
+    if (TempData["noReg"] != null)
+    {
+        <input hidden="hidden" value="10" id="noReg" />
+    }
+
+    if (TempData["Reg"] != null)
+    {
+        <input hidden="hidden" value="10" id="reg" />
+    }
+    if (TempData["noConecta"] != null)
+    {
+        <input hidden="hidden" value="10" id="noConecta" />
+    }
+
+}
+
+<title>Home Finance</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- BOOTSTRAP CSS -->
+
+<link rel="shortcut icon" href="imagenes/homefinance2.ico" type="image/png" />
+
+
+<link href="../../Content/estilo.css" rel="stylesheet" />
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css" rel="stylesheet" type="text/css" />
+
+<script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+
+<div id="loginbox" style="margin-top:150px;margin-left:25%">
+
+    @using (Html.BeginForm())
+    {
+        <div class="container">
+            <div class="col-md-offset-3 col-md-9">
+                <h2>Login</h2>
+
+                <div class="row">
+                    <!-- Login -->
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">portrait</i>
+                        @Html.TextBox("login")
+                        <label for="icon_prefix2">Login</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Password -->
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">lock</i>
+                        @Html.Password("password")
+                        <label class="active" for="euro_symbol">Contraseña</label>
+                    </div>
+                </div>
+
+                <div class="col-md-offset-3 col-md-9">
+
+                    <button ID="btnRegistrar" class="btn waves-effect waves-light" type="submit" runat="server" OnClick="btnRegistrar_Click" Text="Enviar Datos" style="margin-top:10%;margin-left:25%;">Login</button>
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+    <div class="form-group" style="margin-top: 5%">
+        <div class="col-md control">
+            ¿Aún no tienes Cuenta?
+            <a href="@Url.Action("Registrar","Login")" class="navbar-brand"> Registrase aqui</a>
+        </div>
+    </div>
+
+</div> <!-- Div loginBox-->
+
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        if (!!$("#mens").val()) {
+            swal("Error!", "Usuario NO Logeado!", "error");
+        }
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        if (!!$("#inac").val()) {
+            swal("Error!", "El Usuario NO está Activo", "error");
+        }
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        if (!!$("#reg").val()) {
+            swal("Enhorabuena!", "El Usuario ha Sido Registrado con Exito", "success");
+        }
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        if (!!$("#noReg").val()) {
+            swal("Error!", "El Usuario NO ha sido Registrado", "error");
+        }
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        if (!!$("#noConecta").val()) {
+            swal("Error!", "No ha Conectado la Base de datos", "error");
+        }
+    });
+</script>
+
+

@@ -1,0 +1,92 @@
+﻿@model homeFinanceMVC.Models.EvActivoPasivo
+@using homeFinanceMVC.Models
+
+@{
+    ViewBag.Title = "InsertarEvento";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    if (TempData["mesaje"] != null)
+    {
+        <input hidden="hidden" value="10" id="mens" />
+    }
+
+}
+
+<div class="alert alert-info" role="alert">
+    <h3>Insertar Evento</h3>
+</div>
+
+<br />
+
+@using (Html.BeginForm("GuardarDatos", "Evento", FormMethod.Post))
+{
+    <div class="form-horizontal">
+        <div class="container">
+
+            <br />
+            <fieldset>
+                <div class="form-group">
+                    <label class="control-label col-md-2">Descripción</label>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.DescEvento, new { @class = "form-control inputstl" })
+                        @Html.ValidationMessageFor(model => model.DescEvento, null, new { @class = "label label-danger" })
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Tipo</label>
+                    <div class="col-md-10">
+                        @Html.RadioButton("TipoEvento", "deb", isChecked: true) @Html.Label("Debito")
+                        @Html.RadioButton("TipoEvento", "cred", isChecked: false) @Html.Label("Credito")
+                    </div>
+                </div>
+
+                <br />
+                <br />
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Guardar Datos" class="btn btn-primary" />
+                        <a class="btn btn-info" href="@Url.Action("Index", "Home")" role="button">Volver</a>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+    </div>
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+
+        <script>
+            $(document).ready(function () {
+                if ($("#mens").val().length > 0) {
+                    swal("Enhorabuena!", "Evento Insertado con Exito!", "success");
+                }
+
+            });
+        </script>
+    }
+
+    <style>
+
+        .inputstl {
+            padding: 9px;
+            border: solid 1px #4B718B;
+            outline: 0;
+            background: -webkit-gradient(linear, left top, left 25, from(#FFFFFF), color-stop(4%, #CDDBE4), to(#FFFFFF));
+            background: -moz-linear-gradient(top, #FFFFFF, #CDDBE4 1px, #FFFFFF 25px);
+            box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+            -moz-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+            -webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+        }
+
+        .bor {
+            border: none;
+        }
+    </style>
+
+}
+
+

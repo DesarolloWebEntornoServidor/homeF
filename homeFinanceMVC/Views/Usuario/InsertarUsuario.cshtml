@@ -1,0 +1,124 @@
+﻿@model homeFinanceMVC.Models.Usuario
+@using homeFinanceMVC.Models
+
+@{
+    ViewBag.Title = "InsertarUsuario";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    if (TempData["mesaje"] != null)
+    {
+        <input hidden="hidden" value="10" id="mens" />
+    }
+}
+
+<div class="alert alert-info" role="alert">
+    <h3>Insertar Usuario</h3>
+</div>
+
+
+@using (Html.BeginForm("GuardarDatos", "Usuario", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="form-horizontal">
+        <div class="container">
+
+            <br />
+            <fieldset>
+                <div class="form-group">
+                    <label class="control-label col-md-2">Nombre</label>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control inputstl" })
+                        @Html.ValidationMessageFor(model => model.Nombre, null, new { @class = "label label-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Login</label>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.Login, new { @class = "form-control inputstl" })
+                        @Html.ValidationMessageFor(model => model.Login, null, new { @class = "label label-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Password</label>
+                    <div class="col-md-10">
+                        @Html.PasswordFor(model => model.Password, new { @class = "form-control inputstl bor" })
+                        @Html.ValidationMessageFor(model => model.Password, null, new { @class = "label label-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Tipo</label>
+                    <div class="col-md-10">
+                        @Html.RadioButtonFor(model => model.Tipo, "1", new { Checked = "checked" }) Usuario
+                        @Html.RadioButtonFor(model => model.Tipo, "2", new { @class = "marg" }) Administrador
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Situación</label>
+                    <div class="col-md-10">
+                        @Html.RadioButtonFor(model => model.Situacion, "1", new { Checked = "checked" }) Activo
+                        @Html.RadioButtonFor(model => model.Situacion, "0", new { @class = "marg" }) Inactivo
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Foto</label>
+                    <div class="col-md-10">
+                        <input type="file" class="btn btn-3d " name="file" id="file" style="width: 100%;" />
+                    </div>
+                </div>
+
+                <br />
+                <br />
+
+                <div class="form-group" style="margin-top:10px">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Guardar Datos" class="btn btn-primary" />
+                        <a class="btn btn-info" href="@Url.Action("Index", "Home")" role="button">Volver</a>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+    </div>
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+
+        <script>
+            $(document).ready(function () {
+                if ($("#mens").val().length > 0) {
+                    swal("Enhorabuena!", "Usuario Insertado con Exito!", "success");
+                }
+
+            });
+        </script>
+
+    }
+
+    <style>
+        .marg {
+            margin: 0 3px 0 5px
+        }
+
+        .inputstl {
+            padding: 9px;
+            border: solid 1px #4B718B;
+            outline: 0;
+            background: -webkit-gradient(linear, left top, left 25, from(#FFFFFF), color-stop(4%, #CDDBE4), to(#FFFFFF));
+            background: -moz-linear-gradient(top, #FFFFFF, #CDDBE4 1px, #FFFFFF 25px);
+            box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+            -moz-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+            -webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+        } 
+
+        .bor{
+            border:none;
+        }
+
+    </style>
+}
+
+

@@ -1,0 +1,6 @@
+﻿@{
+    Layout = null;
+}
+
+@model DateTime?
+@Html.TextBoxFor(model => Model, "{0:dd-MM-yyyy}", new { @class = "form-control jqueryui - marker - datepicker" })

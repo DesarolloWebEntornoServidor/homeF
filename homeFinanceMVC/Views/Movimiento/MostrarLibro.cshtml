@@ -1,0 +1,74 @@
+﻿@model List<Object>
+@using homeFinanceMVC.Models;
+@{
+    ViewBag.Title = "MostrarLibro";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    decimal saldo = ViewBag.Saldo;
+}
+
+<div class="alert alert-info" role="alert" style="width:100%;float:left">
+    <h3 style="float:left; width:60%">Libro Caja</h3>
+    <h3 style="float:left;color:blue; width:25%;margin-left:15%">Saldo Anterior <b> @saldo.ToString("N2")€</b></h3>
+</div>
+
+
+<div class="table-responsive" style="width:95%;margin-left:2.5%">
+    <table class="table table-condensed table-hover table-responsive">
+        @if (Model == null)
+        {
+            <tr>
+                <td colspan="5" class="text-center">No hay Movimientos para estas Fechas !!!</td>
+            </tr>
+        }
+        else
+        {
+            <thead>
+                <tr class="" style="background-color:cornflowerblue;color:darkblue">
+                    <th>Fecha</th>
+                    <th data-defaultsign="AZ">Evento</th>
+                    <th data-defaultsign="AZ">Descripción</th>
+                    <th data-defaultsign="AZ">Cuenta</th>
+                    <th data-defaultsort="_19" style="text-align:center">Credito</th>
+                    <th data-defaultsort="_19"  style="text-align:center">Debito</th>
+                    <th style="text-align:center">Saldo</th>
+                </tr>
+            </thead>
+
+
+
+            double credito = 0, debito = 0;
+
+            foreach (Object[] item in Model)
+            {
+
+                string fecha = String.Format("{0:dd/MM/yyyy}", item[0]).Substring(0, 10);
+
+                credito = 0;
+                debito = 0;
+
+                if (@item[5].ToString().Trim() == "C")
+                {
+                    credito = Convert.ToDouble(item[4]);
+                    saldo = saldo + Convert.ToDecimal(item[4]);
+                }
+                else
+                {
+                    debito = Convert.ToDouble(item[4]);
+                    saldo = saldo - Convert.ToDecimal(item[4]);
+                }
+
+                <tr>
+                    <td>@fecha</td>
+                    <td>@item[1]</td>
+                    <td>@item[2]</td>
+                    <td>@item[3]</td>
+                    <td style="text-align:right;color:green">@credito.ToString("N2")</td>
+                    <td style="text-align:right;color:red">@debito.ToString("N2")</td>
+                    <td style="text-align:right;color:blue">@saldo.ToString("N2")</td>
+                </tr>
+            }
+        }
+    </table>
+</div>
+

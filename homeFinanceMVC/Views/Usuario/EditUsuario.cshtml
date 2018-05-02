@@ -1,0 +1,125 @@
+﻿@model homeFinanceMVC.Models.Usuario
+@using homeFinanceMVC.Models
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="alert alert-info" role="alert">
+    <h3>Modificar Datos del Usuario</h3>
+</div>
+
+<div class="form-group">
+
+</div>
+@using (Html.BeginForm("EditUsuario", "Usuario", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(x => x.IdUsuario)
+    <div class="form-horizontal">
+        <div class="container">
+
+            <fieldset>
+                <div class="form-group">
+                    <label class="control-label col-md-2">Nombre</label>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(x => x.Nombre, new { @class = "form-control inputstl" })
+                        @Html.ValidationMessageFor(model => model.Nombre, null, new { @class = "label label-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Login</label>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(x => x.Login, new { @class = "form-control inputstl" })
+                        @Html.ValidationMessageFor(model => model.Login, null, new { @class = "label label-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Password</label>
+                    <div class="col-md-10">
+                        @Html.PasswordFor(x => x.Password, new { @class = "form-control inputstl bor", value = Utilitarios.Desencriptar(Model.Password) })
+                        @Html.ValidationMessageFor(model => model.Password, null, new { @class = "label label-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Tipo</label>
+                    <div class="col-md-10">
+                        @if (Model.Tipo == 2)
+                        {
+                            @Html.RadioButtonFor(model => model.Tipo, "2", new { Checked = "checked" })
+                            @Html.Label("Usuario", new { @class = "marg" })
+                            @Html.RadioButtonFor(model => model.Tipo, "1", new { @class = "marg" })
+                            @Html.Label("Administrador")
+                        }
+                        else
+                        {
+                            @Html.RadioButtonFor(model => model.Tipo, "2", new { @class = "marg" })
+                            @Html.Label("Usuario", new { @class = "marg" })
+                            @Html.RadioButtonFor(model => model.Tipo, "1", new { Checked = "checked" })
+                            @Html.Label("Administrador")
+                        }
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Situación</label>
+                    <div class="col-md-10">
+                        @if (Model.Situacion == 1)
+                        {
+                            @Html.RadioButtonFor(model => model.Situacion, "1", new { Checked = "checked" })
+                            @Html.Label("Activo  ", new { @class = "marg" })
+                            @Html.RadioButtonFor(model => model.Situacion, "0")
+                            @Html.Label("Inactivo")
+                        }
+                        else
+                        {
+                            @Html.RadioButtonFor(model => model.Situacion, "1")
+                            @Html.Label("Activo  ", new { @class = "marg" })
+                            @Html.RadioButtonFor(model => model.Situacion, "0", new { Checked = "checked" })
+                            @Html.Label("Inactivo")
+                        }
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Foto</label>
+                    <div class="col-md-10">
+                        <img src="@Model.Ruta" width="10%" height="auto" alt="" style="margin-bottom:2%"/>
+                        <br />
+                        <input type="file" class="btn btn-3d" name="file1" id="file1" style="width: 100%;" />
+                    </div>
+                </div>
+
+                <hr />
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                @Html.ActionLink("Cancelar", "ManipularDatos", "Usuario", null, new { @class = "btn btn-warning" })
+            </fieldset>
+
+        </div>
+
+    </div>
+
+    <style>
+        .marg {
+            margin: 0 10px 0 2px;
+        }
+
+        .inputstl {
+            padding: 9px;
+            border: solid 1px #4B718B;
+            outline: 0;
+            background: -webkit-gradient(linear, left top, left 25, from(#FFFFFF), color-stop(4%, #CDDBE4), to(#FFFFFF));
+            background: -moz-linear-gradient(top, #FFFFFF, #CDDBE4 1px, #FFFFFF 25px);
+            box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+            -moz-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+            -webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+        }
+
+        .bor {
+            border: none;
+        }
+    </style>
+}
+

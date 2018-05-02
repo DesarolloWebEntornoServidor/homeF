@@ -1,0 +1,153 @@
+﻿@model homeFinanceMVC.Models.Movimiento
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.InvariantCulture;
+
+    decimal saldo = ViewBag.Saldo;
+
+    if (TempData["mesaje"] != null)
+    {
+        <input hidden="hidden" value="10" id="mens" />
+    }
+}
+
+<div class="alert alert-info" role="alert">
+    <h3>Crear Movimiento</h3>
+</div>
+<div style="align-content:center">
+    <h3 style="color:blue;margin-left:25%;margin-bottom:3%">Saldo Actual @saldo.ToString("N2")</h3>
+</div>
+
+<script src="~/Scripts/MicrosoftAjax.js"></script>
+<script src="~/Scripts/MicrosoftAjax.debug.js"></script>
+<script src="~/Scripts/mvcvalidationextensions.unobtrusive.js"></script>
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-1.10.2.js" language="javascript" type="text/javascript"></script>
+<script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js" language="javascript" type="text/javascript"></script>
+
+
+
+@using (Html.BeginForm("GuardarDatos", "Movimiento", FormMethod.Post))
+{
+    <div class="form-horizontal">
+        <div class="container">
+
+            <fieldset>
+                <div class="form-group">
+                    <label class="control-label col-md-2">Evento</label>
+                    <div class="col-md-10">
+                        @Html.DropDownList("idEvento", new SelectList(ViewBag.listaEventos, "idEvento", "descEvento"), new { @class = "form-control inputstl bor" })
+                        @Html.ValidationMessageFor(model => model.IdEvento, "", new { @class = "label label-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Descripción</label>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.DescMov, new { @class = "form-control inputstl" })
+                        @Html.ValidationMessageFor(model => model.DescMov, "", new { @class = "label label-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Valor</label>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.Valor, new { @class = "form-control inputstl" })
+                        @Html.ValidationMessageFor(model => model.Valor, "", new { @class = "label label-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Fecha</label>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.Fecha, new { @class = "datepicker inputstl" })
+                        @Html.ValidationMessageFor(model => model.Fecha, "", new { @class = "label label-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Cuenta</label>
+                    <div class="col-md-10">
+                        @Html.DropDownList("idCuenta", new SelectList(ViewBag.listaCuentas, "idCuenta", "descCuenta"), new { @class = "form-control inputstl bor" })
+                        @Html.ValidationMessageFor(model => model.IdCuenta, "", new { @class = "label label-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2"></label>
+                    <div class="col-md-10">
+                        <input type="hidden" name="saldo" value="@saldo" />
+                    </div>
+                </div>
+
+                <br />
+                <br />
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Guardar Datos" class="btn btn-primary" />
+                        <a class="btn btn-info" href="@Url.Action("Index", "Home")" role="button">Volver</a>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+    </div>
+
+    @section Scripts {
+
+        @Scripts.Render("~/bundles/jqueryval")
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/Scripts/jquery-ui.js")
+
+        <script>
+            $(document).ready(function () {
+                if ($("#mens").val().length > 0) {
+                    swal("Enhorabuena!", "Movimiento Insertado con Exito!", "success");
+                }
+
+            });
+        </script>
+
+        <!-- Code to wire up your DatePicker -->
+        <script type="text/javascript" language="javascript">
+            $(function () {
+                $(".datepicker").datepicker({
+                    showOn: "button",
+                    //buttonImage: "~/imagenes/delete.png",
+                    buttonImageOnly: true,
+                });
+            });
+        </script>
+
+    }
+
+    <style>
+
+        .inputstl {
+            padding: 9px;
+            border: solid 1px #4B718B;
+            outline: 0;
+            background: -webkit-gradient(linear, left top, left 25, from(#FFFFFF), color-stop(4%, #CDDBE4), to(#FFFFFF));
+            background: -moz-linear-gradient(top, #FFFFFF, #CDDBE4 1px, #FFFFFF 25px);
+            box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+            -moz-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+            -webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+        }
+
+        .bor {
+            border: none;
+        }
+    </style>
+
+}
+
+
+
+

@@ -1,0 +1,123 @@
+﻿@model PagedList.IPagedList<homeFinanceMVC.Models.EvActivoPasivo>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "ManupularDatosEvento";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    if (TempData["mesaje"] != null)
+    {
+        <input hidden="hidden" value="10" id="mens" />
+    }
+
+    if (TempData["mesajeDelete"] != null)
+    {
+        <input hidden="hidden" value="10" id="del" />
+    }
+}
+<div class="alert alert-info" role="alert">
+    <h3>Lista de Cuentas</h3>
+</div>
+
+<div class="table-responsive" style="width:95%;margin-left:2.5%">
+    <table class="table table-condensed table-hover sortable table-responsive">
+        @if (Model.Count() == 0)
+        {
+            <tr>
+                <td colspan="5" class="text-center">No hay Cuentas a mostrar !!!</td>
+            </tr>
+        }
+        else
+        {
+            <thead>
+                <tr class="" style="background-color:cornflowerblue;color:darkblue">
+                    <th data-defaultsign="_19">ID</th>
+                    <th data-defaultsign="AZ">Cuenta</th>
+                    <th data-defaultsign="AZ">Tipo</th>
+                    <th width="10%">Modificar</th>
+                    <th width="10%">Borrar</th>
+                </tr>
+            </thead>
+
+            string descTipo = "";
+
+            foreach (var item in Model)
+            {
+                if (item.TipoEvento == "C")
+                {
+                    descTipo = "Credito";
+                }
+                else
+                {
+                    descTipo = "Debito";
+                }
+
+                <tr>
+                    <td>@item.IdEvento</td>
+                    <td>@item.DescEvento</td>
+                    <td>@descTipo</td>
+                    <td>
+                        <button class="btn btn-warning" onclick="location.href='@Url.Action("EditEvento", "Evento", new { id = @item.IdEvento })'" type="button">Modificar</button>
+                    </td>
+                    <td>
+                        <a href="#myModal" class="btn btn-danger delete" data-toggle="modal" data-id="@item.IdEvento">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("ManupularDatosEvento", new { page }))
+</div>
+
+
+@section scripts
+{
+
+    <script>
+        $(document).ready(function () {
+            if ($("#del").val().length > 0) {
+                swal("Enhorabuena!", "Evento Borrado con Exito!", "success");
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            if ($("#mens").val().length > 0) {
+                swal("Enhorabuena!", "Evento Modificado con Exito!", "success");
+            }
+        });
+    </script>
+
+    <script>
+        $(".delete").click(function (eve) {
+            $("#modal-content").load("/Evento/DeleteEvento/" + $(this).data("id"));
+        });
+    </script>
+}
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Desea Borrar el Evento</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="modal-content">
+                    <div style="text-align:center;display:none" id="loaderDiv">
+                        <img src="~/imagenes/loader.gif" width="150" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->

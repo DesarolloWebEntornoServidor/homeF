@@ -1,0 +1,87 @@
+﻿
+@model homeFinanceMVC.Models.Usuario
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+
+}
+
+<title>Home Finance</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- BOOTSTRAP CSS -->
+
+<link rel="shortcut icon" href="imagenes/homefinance2.ico" type="image/png" />
+
+
+<link href="../../Content/estilo.css" rel="stylesheet" />
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css" rel="stylesheet" type="text/css" />
+
+<script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+
+<div id="loginbox" style="margin-top:100px;margin-left:15%">
+
+    @using (Html.BeginForm())
+    {
+        <div class="container">
+            <div class="col-md-offset-3 col-md-9">
+                <h2>Registrar</h2>
+                <a href="@Url.Action("Login","Login")" class="navbar-brand" style="margin-left:55%;">Login</a>
+
+                <div class="row">
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">description</i>
+                        @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control inputstl" })
+                        @Html.ValidationMessageFor(model => model.Nombre, null, new { @class = "label label-danger" })
+                        <label for="icon_prefix2">Nombre</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Login -->
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">portrait</i>
+                        @Html.TextBoxFor(model => model.Login, new { @class = "form-control inputstl" })
+                        @Html.ValidationMessageFor(model => model.Login, null, new { @class = "label label-danger" })
+                        <label for="icon_prefix2">Login</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Password -->
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">lock</i>
+                        @Html.PasswordFor(model => model.Password, new { @class = "form-control inputstl bor" })
+                        @Html.ValidationMessageFor(model => model.Password, null, new { @class = "label label-danger" })
+                        <label class="active" for="euro_symbol">Contraseña</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <input type="hidden" class="form-control" id="tipo" name="tipo" value="1">
+                </div>
+
+                <div class="form-group">
+                    <!-- Button -->
+                    <div class="col-md-offset-3 col-md-9">
+                        <input type="submit" value="Registrar" class="btn waves-effect waves-light" style="margin-top:4%;margin-left:10%"/>
+                        @*<a ID="btnRegistrar" class="btn waves-effect waves-light" OnClick="btnRegistrar_Click" Text="Enviar Datos" style="margin-top:10%;margin-left:25%;">Registrar</a>*@
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+</div> 
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+
+
+
+
+

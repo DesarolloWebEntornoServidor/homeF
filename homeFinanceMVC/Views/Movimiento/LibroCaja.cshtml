@@ -1,0 +1,72 @@
+﻿
+@{
+    ViewBag.Title = "LibroCaja";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="alert alert-info" role="alert">
+    <h3>Libro Caja</h3>
+</div>
+
+<!-- Code to wire up your DatePicker -->
+<script type="text/javascript" language="javascript">
+    $(function () {
+        $(".datepicker").datepicker({
+            showOn: "button",
+            //buttonImage: "~/imagenes/delete.png",
+            buttonImageOnly: true,
+        });
+    });
+</script>
+
+@using (Html.BeginForm("MostrarLibro", "Movimiento", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <div class="container" style="">
+
+            <div class="form-group col-md-10">
+                <div class="row" style="width:95%;margin-left:2.5%">
+                    <label class="control-label" style="color:darkblue">Fecha de</label>
+                    @Html.TextBox("de", "", new { @class = "datepicker inputstl" })
+
+                    <label class="control-label" style="color:darkblue">Hasta</label>
+                    @Html.TextBox("hasta", "", new { @class = "datepicker inputstl" })
+                    <input type="submit" value="Mostrar Movimientos de Caja" class="btn btn-primary" style="margin-left:2%" />
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/Scripts/jquery-ui.js")
+
+    <style>
+        .marg {
+            margin: 0 10px 0 2px;
+        }
+
+        .inputstl {
+            padding: 9px;
+            border: solid 1px #4B718B;
+            outline: 0;
+            background: -webkit-gradient(linear, left top, left 25, from(#FFFFFF), color-stop(4%, #CDDBE4), to(#FFFFFF));
+            background: -moz-linear-gradient(top, #FFFFFF, #CDDBE4 1px, #FFFFFF 25px);
+            box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+            -moz-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+            -webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+        }
+
+        .bor {
+            border: none;
+        }
+    </style>
+}
+
+
+

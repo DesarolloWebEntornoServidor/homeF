@@ -1,43 +1,288 @@
-﻿<!DOCTYPE html>
+﻿@*@model IEnumerable<homeFinanceMVC.Models.Log>
+@using homeFinanceMVC.Models
+@{
+    ViewBag.Title = "MostrarMovimientos2";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<Log> listaLogs = ViewBag.ListaLogs;
+    
+    int contLIsta = Convert.ToInt32(ViewBag.controlLista);
+}*@
+
+<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
+
+    <meta charset="utf-8">
+    <meta name="description" content="Home Finance MVC v.1">
+    <meta name="author" content="Railton E. Cardoso">
+    <meta name="keyword" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- start: Css -->
+    @*<link rel="stylesheet" type="text/css" href="~/Content/bootstrap.min.css">*@
+
+    <link href="~/Content/sweetalert.css" rel="stylesheet" />
+
+    <!-- plugins -->
+    <link rel="stylesheet" type="text/css" href="~/Content/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/simple-line-icons.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/animate.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/style.css" />
+    <!-- end: Css -->
+
+    <link rel="shortcut icon" href="~/imagenes/homefinance2.ico">
+
+    <title>Home Finance</title>
+
     @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/jqueryui")
     @Scripts.Render("~/bundles/modernizr")
+
 </head>
-<body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Nombre de aplicación", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+<body id="mimin" class="dashboard"  style=" background-image: url('../../imagenes/textura_bordeada.jpg');background-size:cover">
+    <!-- start: Header -->
+    <nav class="navbar navbar-default header navbar-fixed-top">
+        <div class="col-md-12 nav-wrapper">
+            <div class="navbar-header" style="width:100%;">
+                <div class="opener-left-menu is-open">
+                    <span class="top"></span>
+                    <span class="middle"></span>
+                    <span class="bottom"></span>
+                </div>
+                <a href="@Url.Action("Index", "Home")" class="navbar-brand">
+                    <b>Home Finance</b>
+                </a>
+                <ul class="nav navbar-nav search-nav">
+                    <li>
+                        <!-- Puede poner cosas en la barra de menu fixa-->
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right user-nav">
+                    <li class="user-name blue-grey" style="color:cornflowerblue"><span>@Session["nombreusu"]</span></li>
+                    <li class="dropdown avatar-dropdown">
+                        <img src='@Session["ruta"]' class="img-circle avatar" alt="user name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" />
+                        <ul class="dropdown-menu user-dropdown">
+                            <li><a href="#"><span class="fa fa-user"></span> Perfil</a></li>
+                            <li><a href="@Url.Action("Login", "Login")"><span class="fa fa-power-off "></span> Salir</a></li>
+                            <li role="separator" class="divider"></li>
+                        </ul>
+                    </li>
+                    <li><a href="#" class="opener-right-menu"><span class="fa fa-envelope-o"></span></a></li>
+                </ul>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Inicio", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Acerca de", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contacto", "Contact", "Home")</li>
+        </div>
+    </nav>
+    <!-- end: Header -->
+    <div class="container-fluid mimin-wrapper">
+
+        <!-- start:Left Menu -->
+        <div id="left-menu" style="margin-top:-45px">
+            <div class="sub-left-menu scroll">
+                <ul class="nav nav-list">
+                    <li><div class="left-bg"></div></li>
+                    <li class="time" style="margin-top:-35%">
+                        <h1 class="animated fadeInLeft">21:00</h1>
+                        <p class="animated fadeInRight">Sat,October 1st 2029</p>
+                    </li>
+                    <li><a href="@Url.Action("Index", "Home")"><span class="fa fa-home"></span> Painel Principal</a></li>
+
+                    <li class="ripple">
+                        <a class="tree-toggle nav-header">
+                            <span class="fa-users fa"></span> Usuarios
+                            <span class="fa-angle-right fa right-arrow text-right"></span>
+                        </a>
+                        <ul class="nav nav-list tree">
+                            <li>@Html.ActionLink("Insertar Usuario", "InsertarUsuario", "Usuario")</li>
+                            <li>@Html.ActionLink("Manipular Datos", "ManipularDatos", "Usuario")</li>
+                        </ul>
+                    </li>
+                    <li class="ripple">
+                        <a class="tree-toggle nav-header">
+                            <span class="fa-euro fa"></span> Cuentas
+                            <span class="fa-angle-right fa right-arrow text-right"></span>
+                        </a>
+                        <ul class="nav nav-list tree">
+                            <li>@Html.ActionLink("Insertar Cuenta", "InsertarCuenta", "Cuenta")</li>
+                            <li>@Html.ActionLink("Manipular Datos", "ManupularDatosCuenta", "Cuenta")</li>
+                        </ul>
+                    </li>
+                    <li class="ripple">
+                        <a class="tree-toggle nav-header">
+                            <span class="fa fa-edit"></span> Eventos
+                            <span class="fa-angle-right fa right-arrow text-right"></span>
+                        </a>
+                        <ul class="nav nav-list tree">
+                            <li>@Html.ActionLink("Insertar Evento", "InsertarEvento", "Evento")</li>
+                            <li>@Html.ActionLink("Manipular Datos", "ManupularDatosEvento", "Evento")</li>
+                        </ul>
+                    </li>
+                    <li class="ripple">
+                        <a class="tree-toggle nav-header">
+                            <span class="fa fa-check-square-o"></span> Movimiento
+                            <span class="fa-angle-right fa right-arrow text-right"></span>
+                        </a>
+                        <ul class="nav nav-list tree">
+                            <li>@Html.ActionLink("Insertar Movimiento", "Create", "Movimiento")</li>
+                            <li>@Html.ActionLink("Manipular Datos", "ManipularDatos", "Movimiento")</li>
+                        </ul>
+                    </li>
+                    <li><a href="@Url.Action("Grafico", "Home")"><span class="fa fa-pie-chart"></span> Graficos</a></li>
+                    <li><a href="@Url.Action("LibroCaja", "Movimiento")"><span class="fa fa-list-alt"></span> Caja General</a></li>
+                    <li class="ripple"><a href="#"></a></li>
+                    <li class="ripple"><a href="#"></a></li>
+                    <li class="ripple"><a href="#"></a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- end: Left Menu -->
+        <!-- start: content -->
+        <div id="content">
+            @RenderBody()
+        </div>
+        <!-- end: content -->
+        <!-- start: Menu de Logs -->
+        <div id="right-menu">
+            <ul class="nav nav-tabs"></ul>
+            <div class="tab-content">
+                <div id="right-menu-user" class="tab-pane fade in active">
+                    <div class="user col-md-12">
+                        <!-- Lista de Logs -->
+
+                    </div> <!-- Fin de la Lista de Logs -->
+                </div>
+            </div>
+        </div>
+        <!-- end: Menu de Logs -->
+
+    </div>
+    <!-- start: Mobile -->
+    <div id="mimin-mobile" class="reverse">
+        <div class="mimin-mobile-menu-list">
+            <div class="col-md-12 sub-mimin-mobile-menu-list animated fadeInLeft">
+                <ul class="nav nav-list">
+                    <li class="active ripple">
+                        <a class="tree-toggle nav-header">
+                            <span class="fa-home fa"></span> Dashboard
+                            <span class="fa-angle-right fa right-arrow text-right"></span>
+                        </a>
+
+                    </li>
+                    <li class="ripple">
+                        <a class="tree-toggle nav-header">
+                            <span class="fa-diamond fa"></span> Usuarios
+                            <span class="fa-angle-right fa right-arrow text-right"></span>
+                        </a>
+                        <ul class="nav nav-list tree">
+                            <li><a href="#">Insertar</a></li>
+                            <li><a href="#">Modificar datos</a></li>
+                        </ul>
+                    </li>
+                    <li class="ripple">
+                        <a class="tree-toggle nav-header">
+                            <span class="fa-area-chart fa"></span> Cuentas
+                            <span class="fa-angle-right fa right-arrow text-right"></span>
+                        </a>
+                        <ul class="nav nav-list tree">
+                            <li><a href="#">Insertar</a></li>
+                            <li><a href="#">Modificar datos</a></li>
+                        </ul>
+                    </li>
+                    <li class="ripple">
+                        <a class="tree-toggle nav-header">
+                            <span class="fa fa-pencil-square"></span> Eventos
+                            <span class="fa-angle-right fa right-arrow text-right"></span>
+                        </a>
+                        <ul class="nav nav-list tree">
+                            <li><a href="#">Insertar</a></li>
+                            <li><a href="#">Modificar datos</a></li>
+                        </ul>
+                    </li>
+                    <li class="ripple">
+                        <a class="tree-toggle nav-header">
+                            <span class="fa fa-check-square-o"></span> Movimiento
+                            <span class="fa-angle-right fa right-arrow text-right"></span>
+                        </a>
+                        <ul class="nav nav-list tree">
+                            <li><a href="#">Insertar</a></li>
+                            <li><a href="#">Modificar datos</a></li>
+                        </ul>
+                    </li>
+                    <li class="ripple">
+                        <a class="tree-toggle nav-header">
+                            <span class="fa fa-envelope-o"></span> Graficos
+                            <span class="fa-angle-right fa right-arrow text-right"></span>
+                        </a>
+                        <ul class="nav nav-list tree">
+                            <li><a href="#">Despiezas</a></li>
+                            <li><a href="#">Entradas</a></li>
+                        </ul>
+                    </li>
+                    <li class="ripple"><a href="#"><span class="fa fa-calendar-o"></span>Libro Caja</a></li>
                 </ul>
             </div>
         </div>
     </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Mi aplicación ASP.NET</p>
-        </footer>
-    </div>
+    <button id="mimin-mobile-menu-opener" class="animated rubberBand btn btn-circle btn-danger">
+        <span class="fa fa-bars"></span>
+    </button>
+
+    <!-- end: Mobile -->
+    <!-- start: Javascript -->
+    <script src="~/Scripts/jquery.min.js"></script>
+    <script src="~/Scripts/jquery.ui.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <!-- plugins -->
+    <script src="~/Scripts/moment.min.js"></script>
+    <script src="~/Scripts/jquery.nicescroll.js"></script>
+    <!-- custom -->
+    <script src="~/Scripts/main.js"></script>
+
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryui")
+    <script>
+        $(function () {
+            $(".jqueryui-marker-datepicker").datepicker({
+                //dateFormat: "yyyy-mm-dd",
+                changeYear: true,
+                showOn: "button"
+            }).css("display", "inline-block").next("button").button({
+                icons: { primary: "ui-icon-calendar" },
+                label: "Seleccione una Fecha",
+                text: true
+            });
+        });
+
+        $.datepicker.regional['es'] =
+            {
+                closeText: 'Cerrar',
+                prevText: 'Previo',
+                nextText: 'Próximo',
+
+                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+                    'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                monthStatus: 'Ver otro mes', yearStatus: 'Ver otro año',
+                dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sáb'],
+                dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+                dateFormat: 'yy-mm-dd', firstDay: 0,
+                initStatus: 'Selecciona la fecha', isRTL: false
+            };
+
+
+        $(".datepicker").datepicker($.datepicker.regional["es"]);
+
+
+    </script>
     @RenderSection("scripts", required: false)
 </body>
+
+<footer>
+    <p>&copy; @DateTime.Now.Year - Mi aplicación ASP.NET</p>
+</footer>
+
 </html>

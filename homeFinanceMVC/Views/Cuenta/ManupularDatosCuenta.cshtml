@@ -1,0 +1,117 @@
+﻿@model PagedList.IPagedList<homeFinanceMVC.Models.Cuenta>
+@using PagedList.Mvc;
+@using homeFinanceMVC.Models;
+
+@{
+    ViewBag.Title = "ManupularDatosCuenta";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    if (TempData["mesaje"] != null)
+    {
+        <input hidden="hidden" value="10" id="mens" />
+    }
+
+    if (TempData["mesajeDelete"] != null)
+    {
+        <input hidden="hidden" value="10" id="del" />
+    }
+}
+
+<div class="alert alert-info" role="alert">
+    <h3>Cuentas</h3>
+</div>
+
+<div class="table-responsive" style="width:95%;margin-left:2.5%">
+    <table class="table table-condensed table-hover sortable table-responsive">
+        @if (Model == null)
+        {
+            <tr>
+                <td colspan="5" class="text-center">No hay Cuentas para Mostrar !!!</td>
+            </tr>
+        }
+        else
+        {
+            <thead>
+                <tr class="" style="background-color:cornflowerblue;color:darkblue">
+                    <th data-defaultsign="_19">ID</th>
+                    <th data-defaultsign="AZ">Cuenta</th>
+                    <th data-defaultsign="AZ">Usuario</th>
+                    <th width="10%">Modificar</th>
+                    <th width="10%">Borrar</th>
+                </tr>
+            </thead>
+
+            foreach (var item in Model)
+            {
+                UsuarioDAO uDAO = new UsuarioDAO();
+                Usuario u = uDAO.ObtenerUsuarioPorId(item.IdUsuario);
+
+            <tr>
+                <td>@item.IdCuenta</td>
+                <td>@item.DescCuenta</td>
+                <td>@u.Nombre</td>
+                <td><button class="btn btn-warning" onclick="location.href='@Url.Action("EditCuenta", "Cuenta", new { id = item.IdCuenta })'" type="button">Modificar</button></td>
+                <td>
+                    <a href="#myModal" class="btn btn-danger delete" data-toggle="modal" data-id="@item.IdCuenta">Eliminar</a>
+                </td>
+            </tr>
+            }
+        }
+    </table>
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("ManupularDatosCuenta", new { page }))
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Desea Borrar la Cuenta</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="modal-content">
+                    <div style="text-align:center;display:none" id="loaderDiv">
+                        <img src="~/imagenes/loader.gif" width="150" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+
+
+@section scripts
+{
+
+    <script>
+        $(".delete").click(function (eve) {
+            $("#loaderDiv").show();
+            $("#modal-content").load("/Cuenta/DeleteCuenta/" + $(this).data("id"));
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            if ($("#del").val().length > 0) {
+                swal("Enhorabuena!", "Cuenta Borrada con Exito!", "success");
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            if ($("#mens").val().length > 0) {
+                swal("Enhorabuena!", "Cuenta Modificada con Exito!", "success");
+            }
+        });
+    </script>
+
+}

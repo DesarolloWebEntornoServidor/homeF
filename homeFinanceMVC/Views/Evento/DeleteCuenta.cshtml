@@ -1,0 +1,62 @@
+﻿@model Datos.Entidades.EvActivoPasivo
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("DelEvento", "Evento", new { id = @Model.IdEvento }))
+{
+
+    string usuTipo = "Credito";
+    if (@Model.TipoEvento != "C")
+    {
+        usuTipo = "Debito";
+    }
+    <div class="form-horizontal">
+        <div class="container">
+            <br />
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Cuenta</label>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(x => x.DescEvento, new { @readonly = "readonly", @class = "inputstl" })
+
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Login</label>
+                <div class="col-md-10">
+                    @Html.TextBox(usuTipo, new { @readonly = "readonly", @class = "inputstl" })
+                </div>
+            </div>
+
+
+            @Html.ActionLink("Confirma", "DelEvento", new { id = Model.IdEvento }, new { @class = "btn btn-danger" })
+            @Html.ActionLink("Cancelar", "ManipularDatosEvento", "Evento", null, new { @class = "btn btn-warning" })
+
+        </div>
+    </div>
+
+    <style>
+        .marg {
+            margin: 0 10px 0 2px;
+        }
+
+        .inputstl {
+            padding: 9px;
+            border: solid 1px #4B718B;
+            outline: 0;
+            background: -webkit-gradient(linear, left top, left 25, from(#FFFFFF), color-stop(4%, #CDDBE4), to(#FFFFFF));
+            background: -moz-linear-gradient(top, #FFFFFF, #CDDBE4 1px, #FFFFFF 25px);
+            box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+            -moz-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+            -webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+        }
+
+        .bor {
+            border: none;
+        }
+    </style>
+
+}

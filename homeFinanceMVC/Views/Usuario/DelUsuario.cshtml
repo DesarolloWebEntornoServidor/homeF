@@ -1,0 +1,72 @@
+﻿@model homeFinanceMVC.Models.Usuario
+@using homeFinanceMVC.Models
+@{
+    Layout = null;
+}
+
+
+@using (Html.BeginForm("DelUsuarioConfirma", "Usuario", new { id = @Model.IdUsuario }))
+{
+
+    string usuTipo = "Usuario";
+    if (@Model.Tipo != 1)
+    {
+        usuTipo = "Administrador";
+    }
+    <div class="form-horizontal">
+        <div class="container">
+            <br />
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Nombre</label>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(x => x.Nombre, new { @readonly = "readonly", @class = "inputstl" })
+
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Login</label>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(x => x.Login, new { @readonly = "readonly", @class = "inputstl" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2"></label>
+                <div class="col-md-10">
+                    <img src="@Model.Ruta" width="10%" height="auto" alt="" />
+                    <br />
+                </div>
+            </div>
+
+            @Html.ActionLink("Confirma", "DelUsuarioConfirma", new { id = Model.IdUsuario }, new { @class = "btn btn-danger" })
+            @Html.ActionLink("Cancelar", "ManipularDatos", "Usuario", null, new { @class = "btn btn-warning" })
+            @*@Html.ActionLink("Confirma", "DelUsuarioConfirma", new { id = Model.IdUsuario }, new { @class = "btn btn-danger", onClick = "swal('¡enhorabuena!', 'Usuario Borrado con Exito!', 'success')" })*@
+
+        </div>
+    </div>
+
+    <style>
+        .marg {
+            margin: 0 10px 0 2px;
+        }
+
+        .inputstl {
+            padding: 9px;
+            border: solid 1px #4B718B;
+            outline: 0;
+            background: -webkit-gradient(linear, left top, left 25, from(#FFFFFF), color-stop(4%, #CDDBE4), to(#FFFFFF));
+            background: -moz-linear-gradient(top, #FFFFFF, #CDDBE4 1px, #FFFFFF 25px);
+            box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+            -moz-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+            -webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+        }
+
+        .bor {
+            border: none;
+        }
+    </style>
+
+}
