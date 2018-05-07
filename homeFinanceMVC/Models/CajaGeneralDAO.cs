@@ -22,10 +22,15 @@ namespace homeFinanceMVC.Models
             vl = vl.Replace(',', '.');
             vr = vr.Replace(',', '.');
 
+            string f = String.Format("{0}-{1}-{2}", cg.FechaSaldo.Substring(6), cg.FechaSaldo.Substring(3, 2), cg.FechaSaldo.Substring(0, 2));
+
             MySqlCommand comando = new MySqlCommand(string.Format("Insert into cajageneral (fechaSaldo, saldo) values ('{0}','{1}')",
-                cg.FechaSaldo, vr), Conexion.ObtenerConexion());
+                f, vr), Conexion.ObtenerConexion());
 
             int retorno = comando.ExecuteNonQuery();
+
+            Conexion.CerrarConexion();
+
             return retorno;
         }
 
@@ -51,6 +56,8 @@ namespace homeFinanceMVC.Models
             MySqlCommand comando = new MySqlCommand(string.Format("update cajageneral set saldo = (saldo + '{0}') where fechaSaldo >= '{1}'", vr, fecha), Conexion.ObtenerConexion());
 
             retorno = comando.ExecuteNonQuery();
+
+            Conexion.CerrarConexion();
 
             return;
         }
@@ -79,13 +86,15 @@ namespace homeFinanceMVC.Models
         {
             decimal saldo = 0;
 
+            string f = String.Format("{0}-{1}-{2}", de.Substring(6), de.Substring(3, 2), de.Substring(0, 2));
+
+
             MySqlConnection cmd = Conexion.ObtenerConexion();
 
-            MySqlCommand comando = new MySqlCommand(String.Format("select saldo from cajageneral where fechaSaldo >= '{0}' limit 1;", de), cmd);
+            MySqlCommand comando = new MySqlCommand(String.Format("select saldo from cajageneral where fechaSaldo >= '{0}' limit 1;", f), cmd);
             MySqlDataReader cods = comando.ExecuteReader();
             while (cods.Read())
             {
-                //cg.IdCaja = cods.GetInt32(0);
                 saldo = cods.GetDecimal(0);
             }
 
@@ -123,8 +132,6 @@ namespace homeFinanceMVC.Models
 
         public CajaGeneral LocalizarNuevoSaldo(string de)
         {
-            //string fecha = String.Format("{0:yyyy-MM-dd}", de);
-
             string[] data = de.Split('/');
             string fecha = de;
 

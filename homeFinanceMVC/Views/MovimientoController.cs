@@ -41,13 +41,18 @@ namespace homeFinanceMVC.Views
             Movimiento nuevoMov = new Movimiento();
 
             List<EvActivoPasivo> lEventos = new List<EvActivoPasivo>();
-            lEventos = evDAO.ListarEvActivoPasivos();
+            lEventos = evDAO.ListarTodosEventos();
             ev = new EvActivoPasivo("Select un Evento");
             lEventos.Insert(0, ev);
             ViewBag.listaEventos = lEventos;
 
             List<Cuenta> lCuentas = new List<Cuenta>();
-            lCuentas = ccDAO.ListarCuentas();
+            lCuentas = ccDAO.ListarCuentasPorId(Convert.ToInt32(Session["idUsu"]));
+
+            if (Convert.ToInt32(Session["tipoUsu"]) == 1)
+            {
+                lCuentas = ccDAO.ListarCuentas();
+            }
             cc = new Cuenta("Select una Cuenta");
             lCuentas.Insert(0, cc);
             ViewBag.listaCuentas = lCuentas;
@@ -64,23 +69,22 @@ namespace homeFinanceMVC.Views
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult GuardarDatos(Movimiento movimiento, FormCollection form)
         {
-            //mov.DescMov = form["desc"].ToString();
-            //mov.Fecha = form["fecha"].ToString();
-            //mov.Valor = Convert.ToDouble(form["valor"]);
-            //mov.IdEvento = Convert.ToInt32(form["evento"]);
-            //mov.IdCuenta = Convert.ToInt32(form["cuenta"]);
-            //mov.IdUsuario = Convert.ToInt32(Session["idUsu"]);
 
             if (!ModelState.IsValid)
             {
                 List<EvActivoPasivo> lEventos = new List<EvActivoPasivo>();
-                lEventos = evDAO.ListarEvActivoPasivos();
+                lEventos = evDAO.ListarTodosEventos();
                 ev = new EvActivoPasivo("Select un Evento");
                 lEventos.Insert(0, ev);
                 ViewBag.listaEventos = lEventos;
 
                 List<Cuenta> lCuentas = new List<Cuenta>();
-                lCuentas = ccDAO.ListarCuentas();
+                lCuentas = ccDAO.ListarCuentasPorId(Convert.ToInt32(Session["idUsu"]));
+
+                if (Convert.ToInt32(Session["tipoUsu"]) == 1)
+                {
+                    lCuentas = ccDAO.ListarCuentas();
+                }
                 cc = new Cuenta("Select una Cuenta");
                 lCuentas.Insert(0, cc);
                 ViewBag.listaCuentas = lCuentas;
@@ -163,8 +167,6 @@ namespace homeFinanceMVC.Views
             string deForm = form["de"].ToString();
             string hastaForm = form["hasta"].ToString();
 
-
-
             Session["de"] = deForm;
             Session["hasta"] = hastaForm;
 
@@ -172,35 +174,30 @@ namespace homeFinanceMVC.Views
 
         }
 
-        public ActionResult MostrarMovimientos2(int? page, string sortOrder)
+        public ActionResult MostrarMovimientos2(int? page)
         {
-            ViewData["FechaSortParm"] = sortOrder == "Fecha" ? "fecha_desc" : "Fecha";
-
             string deForm = Session["de"].ToString();
             string hastaForm = Session["hasta"].ToString();
 
             decimal saldo = cDAO.ConsultarSaldoLibroCaja(deForm);
 
-            List<EvActivoPasivo> listaEventos = evDAO.ListarEvActivoPasivos();
+            List<EvActivoPasivo> listaEventos = evDAO.ListarTodosEventos();
 
             ViewBag.ListaEventos = listaEventos;
 
-            var listaMovimientos = from s in mDAO.ListaMovimientosPorPeriodo(deForm, hastaForm) select s;
+            int id = Convert.ToInt32(Session["idUsu"]);
+
+            var listaMovimientos = from s in mDAO.ListaMovimientosPorPeriodoAndId(deForm, hastaForm, id) select s;
+
+            if (Convert.ToInt32(Session["tipoUsu"]) == 1)
+            {
+                listaMovimientos = from s in mDAO.ListaMovimientosPorPeriodo(deForm, hastaForm) select s;
+            }
 
             int pageSize = 7;
             int pageNumber = (page ?? 1);
 
-            switch (sortOrder)
-            {
-                case "fecha_desc":
-                    listaMovimientos = listaMovimientos.OrderByDescending(s => s.Fecha);
-                    break;
-                default:
-                    listaMovimientos = listaMovimientos.OrderByDescending(s => s.Fecha);
-                    break;
-            }
-
-            return View(listaMovimientos.ToPagedList(pageNumber, pageSize));
+          return View(listaMovimientos.ToPagedList(pageNumber, pageSize));
 
         }
 
@@ -251,11 +248,16 @@ namespace homeFinanceMVC.Views
             mov = mDAO.ObtenerMovimiento(Convert.ToInt32(id));
 
             List<EvActivoPasivo> lEventos = new List<EvActivoPasivo>();
-            lEventos = evDAO.ListarEvActivoPasivos();
+            lEventos = evDAO.ListarTodosEventos();
             ViewBag.listaEventos = lEventos;
 
             List<Cuenta> lCuentas = new List<Cuenta>();
-            lCuentas = ccDAO.ListarCuentas();
+            lCuentas = ccDAO.ListarCuentasPorId(Convert.ToInt32(Session["idUsu"]));
+
+            if (Convert.ToInt32(Session["tipoUsu"]) == 1)
+            {
+                lCuentas = ccDAO.ListarCuentas();
+            }
             ViewBag.listaCuentas = lCuentas;
 
             return View(mov);
@@ -268,11 +270,16 @@ namespace homeFinanceMVC.Views
             if (!ModelState.IsValid)
             {
                 List<EvActivoPasivo> lEventos = new List<EvActivoPasivo>();
-                lEventos = evDAO.ListarEvActivoPasivos();
+                lEventos = evDAO.ListarTodosEventos();
                 ViewBag.listaEventos = lEventos;
 
                 List<Cuenta> lCuentas = new List<Cuenta>();
-                lCuentas = ccDAO.ListarCuentas();
+                lCuentas = ccDAO.ListarCuentasPorId(Convert.ToInt32(Session["idUsu"]));
+
+                if (Convert.ToInt32(Session["tipoUsu"]) == 1)
+                {
+                    lCuentas = ccDAO.ListarCuentas();
+                }
                 ViewBag.listaCuentas = lCuentas;
 
                 return View("EditMovimiento", mov);
@@ -358,7 +365,7 @@ namespace homeFinanceMVC.Views
 
 
             // SE DEVE ACTUALIZAR O SALDO, VERIFICAR AS POSSIBLILIDADES DE MODIFICAR O VALOR  E A DATA ///
-            // vERIFICAR SE A DATA JA EXISTE E ACTUALIZAR OU VERIF SE É NOVA Y INSERTAR, E CLARO, ACTUALIZAR O SALDO //
+            // vERIFICAR SE A DATA JA EXISTE E ACTUALIZAR OU VERIF SE É NOVA Y INSERTAR, Y CLARO, ACTUALIZAR O SALDO //
 
             return RedirectToAction("MostrarMovimientos2", "Movimiento");
 

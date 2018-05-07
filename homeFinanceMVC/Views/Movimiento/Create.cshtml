@@ -1,8 +1,14 @@
 ﻿@model homeFinanceMVC.Models.Movimiento
 
 @{
-    ViewBag.Title = "Create";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (Convert.ToInt32(Session["tipoUsu"]) == 1)
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutUsuario.cshtml";
+    }
 
     System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.InvariantCulture;
 
@@ -92,7 +98,14 @@
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input type="submit" value="Guardar Datos" class="btn btn-primary" />
-                        <a class="btn btn-info" href="@Url.Action("Index", "Home")" role="button">Volver</a>
+                        @if (Convert.ToInt32(Session["tipoUsu"]) == 1)
+                        {
+                                <a class="btn btn-info" href="@Url.Action("Index", "Home")" role="button">Volver</a>
+                        }
+                        else
+                        {
+                                <a class="btn btn-info" href="@Url.Action("IndexUsuario", "Home")" role="button">Volver</a>
+                        }
                     </div>
                 </div>
             </fieldset>

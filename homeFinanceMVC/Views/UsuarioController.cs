@@ -178,6 +178,9 @@ namespace homeFinanceMVC.Views
 
             uDAO.ModificarUsuario(usu);
 
+            if(Convert.ToInt32(Session["tipoUsu"]) == 2)
+                return RedirectToAction("IndexUsuario", "Home");
+
             return RedirectToAction("ManipularDatos", "Usuario");
 
         }

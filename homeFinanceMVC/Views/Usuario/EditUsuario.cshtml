@@ -2,7 +2,14 @@
 @using homeFinanceMVC.Models
 
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (Convert.ToInt32(Session["tipoUsu"]) == 1)
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutUsuario.cshtml";
+    }
 }
 
 <div class="alert alert-info" role="alert">
@@ -36,10 +43,17 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label col-md-2">Password</label>
+                    <label class="control-label col-md-2">Contraseña</label>
                     <div class="col-md-10">
                         @Html.PasswordFor(x => x.Password, new { @class = "form-control inputstl bor", value = Utilitarios.Desencriptar(Model.Password) })
                         @Html.ValidationMessageFor(model => model.Password, null, new { @class = "label label-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-2">Confirmar Contraseña</label>
+                    <div class="col-md-10">
+                        @Html.PasswordFor(x => x.ConfirmPassowrd, new { @class = "form-control inputstl bor", value = Utilitarios.Desencriptar(Model.Password) })
+                        @Html.ValidationMessageFor(x => x.ConfirmPassowrd, null, new { @class = "label label-danger" })
                     </div>
                 </div>
 
@@ -86,7 +100,7 @@
                 <div class="form-group">
                     <label class="control-label col-md-2">Foto</label>
                     <div class="col-md-10">
-                        <img src="@Model.Ruta" width="10%" height="auto" alt="" style="margin-bottom:2%"/>
+                        <img src="@Model.Ruta" width="10%" height="auto" alt="" style="margin-bottom:2%" />
                         <br />
                         <input type="file" class="btn btn-3d" name="file1" id="file1" style="width: 100%;" />
                     </div>
@@ -94,7 +108,15 @@
 
                 <hr />
                 <button type="submit" class="btn btn-primary">Guardar</button>
-                @Html.ActionLink("Cancelar", "ManipularDatos", "Usuario", null, new { @class = "btn btn-warning" })
+
+                @if (Convert.ToInt32(Session["tipoUsu"]) == 1)
+                {
+                    @Html.ActionLink("Cancelar", "ManipularDatos", "Usuario", null, new { @class = "btn btn-warning" })
+                }
+                else
+                {
+                    @Html.ActionLink("Cancelar", "IndexUsuario", "Home", null, new { @class = "btn btn-warning" })
+                }
             </fieldset>
 
         </div>

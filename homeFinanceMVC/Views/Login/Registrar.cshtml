@@ -27,14 +27,14 @@
     {
         <div class="container">
             <div class="col-md-offset-3 col-md-9">
-                <h2>Registrar</h2>
-                <a href="@Url.Action("Login","Login")" class="navbar-brand" style="margin-left:55%;">Login</a>
+                <h2 style="margin-left:-15%;margin-top:30%;margin-bottom:-1%">Registrarse</h2>
+                <a href="@Url.Action("Login","Login")" class="btn waves-effect waves-light" style="margin-left:55%"><b>Logearse</b></a>
 
                 <div class="row">
                     <div class="input-field col s6">
                         <i class="material-icons prefix">description</i>
                         @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control inputstl" })
-                        @Html.ValidationMessageFor(model => model.Nombre, null, new { @class = "label label-danger" })
+                        @Html.ValidationMessageFor(model => model.Nombre, null, new { @class = "label lab" })
                         <label for="icon_prefix2">Nombre</label>
                     </div>
                 </div>
@@ -44,29 +44,35 @@
                     <div class="input-field col s6">
                         <i class="material-icons prefix">portrait</i>
                         @Html.TextBoxFor(model => model.Login, new { @class = "form-control inputstl" })
-                        @Html.ValidationMessageFor(model => model.Login, null, new { @class = "label label-danger" })
+                        @Html.ValidationMessageFor(model => model.Login, null, new { @class = "label lab" })
                         <label for="icon_prefix2">Login</label>
                     </div>
                 </div>
 
                 <div class="row">
-                    <!-- Password -->
                     <div class="input-field col s6">
                         <i class="material-icons prefix">lock</i>
                         @Html.PasswordFor(model => model.Password, new { @class = "form-control inputstl bor" })
-                        @Html.ValidationMessageFor(model => model.Password, null, new { @class = "label label-danger" })
+                        @Html.ValidationMessageFor(model => model.Password, null, new { @class = "label lab" })
                         <label class="active" for="euro_symbol">Contraseña</label>
                     </div>
                 </div>
-
+                <div class="row">
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">lock</i>
+                        @Html.PasswordFor(model => model.ConfirmPassowrd, new { @class = "form-control inputstl bor" })
+                        @Html.ValidationMessageFor(model => model.ConfirmPassowrd, null, new { @class = "label lab" })
+                        <label class="active" for="euro_symbol">Confirme Contraseña</label>
+                    </div>
+                </div>
                 <div class="form-group">
-                    <input type="hidden" class="form-control" id="tipo" name="tipo" value="1">
+                    <input type="hidden" class="form-control" id="tipo" name="tipo" value="2">
                 </div>
 
                 <div class="form-group">
                     <!-- Button -->
                     <div class="col-md-offset-3 col-md-9">
-                        <input type="submit" value="Registrar" class="btn waves-effect waves-light" style="margin-top:4%;margin-left:10%"/>
+                        <input type="submit" value="Registrar" class="btn waves-effect waves-light" style="margin-top:4%;margin-left:10%" />
                         @*<a ID="btnRegistrar" class="btn waves-effect waves-light" OnClick="btnRegistrar_Click" Text="Enviar Datos" style="margin-top:10%;margin-left:25%;">Registrar</a>*@
                     </div>
                 </div>
@@ -80,7 +86,13 @@
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
-
+<style>
+    .lab{
+        background:red;
+        color:white;
+        margin-left:15%;
+    }
+</style>
 
 
 

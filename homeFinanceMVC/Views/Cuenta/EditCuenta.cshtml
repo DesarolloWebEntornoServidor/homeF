@@ -1,8 +1,14 @@
 ﻿@model homeFinanceMVC.Models.Cuenta
 
 @{
-    ViewBag.Title = "EditCuenta";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (Convert.ToInt32(Session["tipoUsu"]) == 1)
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutUsuario.cshtml";
+    }
 }
 
 <div class="alert alert-info" role="alert">
@@ -19,7 +25,7 @@
     <div class="form-horizontal">
         <div class="container">
             <fieldset>
-   
+
                 <div class="form-group">
                     <label class="control-label col-md-2">Descripción</label>
                     <div class="col-md-10">
@@ -27,22 +33,36 @@
                         @Html.ValidationMessageFor(model => model.DescCuenta, "", new { @class = "label label-danger" })
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <label class="control-label col-md-2">Cuenta</label>
-                    <div class="col-md-10">
-                        @Html.DropDownList("idUsuario", new SelectList(ViewBag.listaUsuarios, "idUsuario", "nombre"), new { @class = "form-control inputstl bor" })
-                        @Html.ValidationMessageFor(model => model.IdUsuario, "", new { @class = "label label-danger" })
-                    </div>
+                @if (Convert.ToInt32(Session["tipoUsu"]) == 1)
+    {
+            <div class="form-group">
+                <label class="control-label col-md-2">Usuario</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("idUsuario", new SelectList(ViewBag.listaUsuarios, "idUsuario", "nombre"), new { @class = "form-control inputstl bor" })
+                    @Html.ValidationMessageFor(model => model.IdUsuario, "", new { @class = "label label-danger" })
                 </div>
-
+            </div>
+}
+else
+{
+            @Html.HiddenFor(x => x.IdUsuario)
+}
                 <br />
                 <br />
 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input type="submit" value="Guardar Datos" class="btn btn-primary" />
-                        @Html.ActionLink("Cancelar", "ManupularDatosCuenta", null, new { @class = "btn btn-warning" })
+
+                        @if (Convert.ToInt32(Session["tipoUsu"]) == 1)
+                        {
+                            @Html.ActionLink("Cancelar", "ManupularDatosCuenta", null, new { @class = "btn btn-warning" })
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Cancelar", "IndexUsuario", "Home", null, new { @class = "btn btn-warning" })
+                        }
+
                     </div>
                 </div>
 

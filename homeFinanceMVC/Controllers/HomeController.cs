@@ -41,16 +41,13 @@ namespace homeFinanceMVC.Controllers
             return View(listaLogs);
         }
 
-        public ActionResult About()
+        public ActionResult IndexUsuario()
         {
-            ViewBag.Message = "Your application description page.";
 
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
+            if (Session["idUsu"] == null)
+            {
+                return RedirectToAction("Login", "Login");
+            }
 
             return View();
         }

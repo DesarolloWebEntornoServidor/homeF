@@ -20,7 +20,7 @@ namespace homeFinanceMVC.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult GuardarDatos(EvActivoPasivo evento)
+        public ActionResult GuardarDatosEvento(EvActivoPasivo evento)
         {
             if (!ModelState.IsValid)
             {
@@ -29,20 +29,19 @@ namespace homeFinanceMVC.Controllers
 
             TempData["mesaje"] = "mensagem Ok";
 
+            int retorno = evDAO.Insertar(evento);
 
-            if (evento.TipoEvento == "deb")
-                evento.TipoEvento = "D";
-            else
-                evento.TipoEvento = "C";
-
-            evDAO.Insertar(evento);
-
-            return RedirectToAction("InsertarEvento", "Evento");
+            if (retorno == 3)
+            {
+                TempData["noConecta"] = "BBDD no Conectada !!!";
+            }
+            
+              return RedirectToAction("InsertarEvento", "Evento");
         }
 
         public ActionResult ManupularDatosEvento(int? page)
         {
-            List<EvActivoPasivo> listaEventos = evDAO.ListarEvActivoPasivos();
+            List<EvActivoPasivo> listaEventos = evDAO.ListarTodosEventos();
 
             int pageSize = 7;
             int pageNumber = (page ?? 1);
@@ -60,9 +59,7 @@ namespace homeFinanceMVC.Controllers
 
         public ActionResult DelEvento(string id)
         {
-            ev = evDAO.ObtenerEvento(Convert.ToInt32(id));
-
-            evDAO.Borrar(Convert.ToInt32(id));
+            evDAO.BorarRegistro(Convert.ToInt32(id));
 
             TempData["mesajeDelete"] = "mensagem Ok";
 
@@ -79,27 +76,28 @@ namespace homeFinanceMVC.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult EditEvento(FormCollection form, EvActivoPasivo evento)
+        public ActionResult EditEvento(EvActivoPasivo evento)
         {
             if (!ModelState.IsValid)
             {
-                return View("EditEvento", ev);
+                return View("EditEvento", evento);
             }
 
-            TempData["mesaje"] = "mensagem Ok";
+            EvActivoPasivo ev2 = evDAO.ObtenerEvento(evento.IdEvento);
+          //  EvActivoPasivo ev2 = evDAO.ObtenerEvento(Convert.ToInt32(form["IdEvento"]));
 
-            ev = evDAO.ObtenerEvento(Convert.ToInt32(form["IdEvento"]));
+            ev2.DescEvento = evento.DescEvento;
+            ev2.TipoEvento = evento.TipoEvento;
 
-            ev.DescEvento = evento.DescEvento;
-            ev.TipoEvento = evento.TipoEvento;
+            evDAO.Actualizar(ev2);
 
-            evDAO.Actualizar(ev);
-
-            Log lg = new Log(String.Format("Se ha modificado el Evento de nº {0}", ev.IdEvento));
+            Log lg = new Log(String.Format("Se ha modificado el Evento de nº {0}", ev2.IdEvento));
 
             LogDAO lDAO = new LogDAO();
 
             lDAO.Insertar(lg);
+
+            TempData["mesaje"] = "mensagem Ok";
 
             return RedirectToAction("ManupularDatosEvento", "Evento");
 

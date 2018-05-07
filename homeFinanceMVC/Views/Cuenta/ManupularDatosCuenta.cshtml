@@ -3,8 +3,14 @@
 @using homeFinanceMVC.Models;
 
 @{
-    ViewBag.Title = "ManupularDatosCuenta";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (Convert.ToInt32(Session["tipoUsu"]) == 1)
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutUsuario.cshtml";
+    }
 
     if (TempData["mesaje"] != null)
     {
@@ -37,7 +43,10 @@
                     <th data-defaultsign="AZ">Cuenta</th>
                     <th data-defaultsign="AZ">Usuario</th>
                     <th width="10%">Modificar</th>
-                    <th width="10%">Borrar</th>
+                    @if (Convert.ToInt32(Session["tipoUsu"]) == 1)
+                    {
+                        <th width="10%">Borrar</th>
+                    }
                 </tr>
             </thead>
 
@@ -51,9 +60,10 @@
                 <td>@item.DescCuenta</td>
                 <td>@u.Nombre</td>
                 <td><button class="btn btn-warning" onclick="location.href='@Url.Action("EditCuenta", "Cuenta", new { id = item.IdCuenta })'" type="button">Modificar</button></td>
-                <td>
-                    <a href="#myModal" class="btn btn-danger delete" data-toggle="modal" data-id="@item.IdCuenta">Eliminar</a>
-                </td>
+                @if (Convert.ToInt32(Session["tipoUsu"]) == 1)
+                {
+                    <td><a href="#myModal" class="btn btn-danger delete" data-toggle="modal" data-id="@item.IdCuenta">Eliminar</a></td>
+                }
             </tr>
             }
         }

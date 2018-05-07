@@ -17,7 +17,9 @@ namespace homeFinanceMVC.Models
 
             retorno = comando.ExecuteNonQuery();
 
-           return retorno;
+            Conexion.CerrarConexion();
+
+            return retorno;
         }
 
         public int Borrar(int id)
@@ -31,10 +33,12 @@ namespace homeFinanceMVC.Models
             }
             catch (Exception)
             {
-                Conexion.CerrarConexion();
+                
             }
 
-           return retorno;
+            Conexion.CerrarConexion();
+
+            return retorno;
         }
         public List<Log> ListarLogs()
         {
@@ -52,7 +56,9 @@ namespace homeFinanceMVC.Models
                 lista.Add(l);
             }
 
-           return lista;
+            Conexion.CerrarConexion();
+
+            return lista;
         }
 
 

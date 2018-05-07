@@ -42,7 +42,7 @@ namespace homeFinanceMVC.Models
             }
         }
 
-        public string TipoEvento
+        public string TipoEvento 
         {
             get
             {

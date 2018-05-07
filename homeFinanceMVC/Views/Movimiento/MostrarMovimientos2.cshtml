@@ -2,8 +2,14 @@
 @using PagedList.Mvc;
 @using homeFinanceMVC.Models;
 @{
-    ViewBag.Title = "MostrarMovimientos2";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (Convert.ToInt32(Session["tipoUsu"]) == 1)
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutUsuario.cshtml";
+    }
 
     List<EvActivoPasivo> listaEventos = ViewBag.ListaEventos;
 
@@ -23,7 +29,7 @@
 </div>
 
 <div class="table-responsive" style="width:95%;margin-left:2.5%">
-    <table class="table table-condensed table-hover sortable table-responsive">
+    <table class="table table-condensed table-hover table-responsive">
         @if (Model == null)
         {
             <tr>
@@ -32,10 +38,8 @@
         }
         else
         {
-            <thead class="thead-light">
+            <thead>
                 <tr class="" style="background-color:cornflowerblue;color:darkblue">
-                    @*<a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">@Html.DisplayNameFor(model => model.EnrollmentFecha)</a>*@
-                    @*@Html.ActionLink("MostrarMovimientos2", "Movimiento", new { sortOrder = ViewData["FechaSortParm"] })*@
                     <th>Fecha</th>
                     <th data-defaultsign="AZ">Evento</th>
                     <th data-defaultsign="AZ">Descripción</th>
@@ -78,7 +82,8 @@
         }
     </table>
     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-    @Html.PagedListPager(Model, page => Url.Action("MostrarMovimientos2", new { page, sortOrder = ViewBag.CurrentSort }))
+    @Html.PagedListPager(Model, page => Url.Action("MostrarMovimientos2", new { page }))
+
 </div>
 <hr />
 

@@ -2,8 +2,14 @@
 @using homeFinanceMVC.Models
 
 @{
-    ViewBag.Title = "InsertarUsuario";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (Convert.ToInt32(Session["tipoUsu"]) == 1)
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutUsuario.cshtml";
+    }
 
     if (TempData["mesaje"] != null)
     {
@@ -40,13 +46,19 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label col-md-2">Password</label>
+                    <label class="control-label col-md-2">Contraseña</label>
                     <div class="col-md-10">
                         @Html.PasswordFor(model => model.Password, new { @class = "form-control inputstl bor" })
                         @Html.ValidationMessageFor(model => model.Password, null, new { @class = "label label-danger" })
                     </div>
                 </div>
-
+                <div class="form-group">
+                    <label class="control-label col-md-2">Confirmar Contraseña</label>
+                    <div class="col-md-10">
+                        @Html.PasswordFor(model => model.ConfirmPassowrd, new { @class = "form-control inputstl bor" })
+                        @Html.ValidationMessageFor(model => model.ConfirmPassowrd, null, new { @class = "label label-danger" })
+                    </div>
+                </div>
                 <div class="form-group">
                     <label class="control-label col-md-2">Tipo</label>
                     <div class="col-md-10">
@@ -112,12 +124,11 @@
             box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
             -moz-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
             -webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
-        } 
-
-        .bor{
-            border:none;
         }
 
+        .bor {
+            border: none;
+        }
     </style>
 }
 

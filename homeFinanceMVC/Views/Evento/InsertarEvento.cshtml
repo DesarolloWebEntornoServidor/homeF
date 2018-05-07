@@ -2,12 +2,23 @@
 @using homeFinanceMVC.Models
 
 @{
-    ViewBag.Title = "InsertarEvento";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (Convert.ToInt32(Session["tipoUsu"]) == 1)
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutUsuario.cshtml";
+    }
 
     if (TempData["mesaje"] != null)
     {
         <input hidden="hidden" value="10" id="mens" />
+    }
+
+    if (TempData["noConecta"] != null)
+    {
+        <input hidden="hidden" value="10" id="noConecta" />
     }
 
 }
@@ -18,7 +29,7 @@
 
 <br />
 
-@using (Html.BeginForm("GuardarDatos", "Evento", FormMethod.Post))
+@using (Html.BeginForm("GuardarDatosEvento", "Evento", FormMethod.Post))
 {
     <div class="form-horizontal">
         <div class="container">
@@ -33,12 +44,11 @@
                     </div>
                 </div>
 
-
                 <div class="form-group">
                     <label class="control-label col-md-2">Tipo</label>
                     <div class="col-md-10">
-                        @Html.RadioButton("TipoEvento", "deb", isChecked: true) @Html.Label("Debito")
-                        @Html.RadioButton("TipoEvento", "cred", isChecked: false) @Html.Label("Credito")
+                        @Html.RadioButtonFor(model => model.TipoEvento, "D", new { Checked = "checked" }) Debito
+                        @Html.RadioButtonFor(model => model.TipoEvento, "C", new { @class = "marg" }) Credito
                     </div>
                 </div>
 
@@ -48,7 +58,14 @@
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input type="submit" value="Guardar Datos" class="btn btn-primary" />
-                        <a class="btn btn-info" href="@Url.Action("Index", "Home")" role="button">Volver</a>
+                        @if (Convert.ToInt32(Session["tipoUsu"]) == 1)
+                        {
+                               <a class="btn btn-info" href="@Url.Action("Index", "Home")" role="button">Volver</a>
+                        }
+                        else
+                        {
+                               <a class="btn btn-info" href="@Url.Action("IndexUsuario", "Home")" role="button">Volver</a>
+                        }
                     </div>
                 </div>
             </fieldset>
@@ -67,10 +84,20 @@
 
             });
         </script>
+
+        <script>
+            $(document).ready(function () {
+                if (!!$("#noConecta").val()) {
+                    swal("Error!", "No ha Conectado la Base de datos", "error");
+                }
+            });
+        </script>
     }
 
     <style>
-
+        .marg {
+            margin: 0 3px 0 5px
+        }
         .inputstl {
             padding: 9px;
             border: solid 1px #4B718B;

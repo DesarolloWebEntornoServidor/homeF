@@ -18,16 +18,10 @@ namespace homeFinanceMVC.Models
                 c.DescCuenta, c.IdUsuario), Conexion.ObtenerConexion());
 
             retorno = comando.ExecuteNonQuery();
-            return retorno;
-        }
 
-        public DataTable Consultar()
-        {
-            DataSet ds = new DataSet();
-            DataTable dt = new DataTable();
-            MySqlDataAdapter comando = new MySqlDataAdapter("select * from cuentas c join usuarios u on (c.idUsuario=u.idUsuario) order by descCuenta", Conexion.ObtenerConexion());
-            comando.Fill(dt);
-            return dt;
+            Conexion.CerrarConexion();
+
+            return retorno;
         }
 
         public Cuenta ObtenerCuenta(int id)
@@ -42,6 +36,7 @@ namespace homeFinanceMVC.Models
                 cc.DescCuenta = codigos.GetString(1);
                 cc.IdUsuario = codigos.GetInt32(2);
             }
+
             Conexion.CerrarConexion();
 
             return cc;
@@ -58,10 +53,12 @@ namespace homeFinanceMVC.Models
             }
             catch (Exception)
             {
-                Conexion.CerrarConexion();
+                
             }
 
-           return retorno;
+            Conexion.CerrarConexion();
+
+            return retorno;
         }
 
         public int Actualizar(Cuenta cc)
@@ -72,6 +69,9 @@ namespace homeFinanceMVC.Models
                 cc.DescCuenta, cc.IdUsuario, cc.IdCuenta), Conexion.ObtenerConexion());
 
             retorno = comando.ExecuteNonQuery();
+
+            Conexion.CerrarConexion();
+
             return retorno;
         }
 
@@ -92,9 +92,30 @@ namespace homeFinanceMVC.Models
                 lista.Add(evs);
             }
 
+            Conexion.CerrarConexion();
+
             return lista;
         }
+ 
+        public List<Cuenta> ListarCuentasPorId(int id)
+        {
+            List<Cuenta> lista = new List<Cuenta>();
 
+            MySqlCommand comando = new MySqlCommand(String.Format("select * from cuentas where idUsuario={0}", id), Conexion.ObtenerConexion());
+            MySqlDataReader codigos = comando.ExecuteReader();
+            while (codigos.Read())
+            {
+                Cuenta evs = new Cuenta();
+                evs.IdCuenta = codigos.GetInt32(0);
+                evs.DescCuenta = codigos.GetString(1);
+                evs.IdUsuario = codigos.GetInt32(2);
 
+                lista.Add(evs);
+            }
+
+            Conexion.CerrarConexion();
+
+            return lista;
+        }
     }
 }

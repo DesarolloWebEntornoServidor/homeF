@@ -45,15 +45,20 @@
                         <!-- Puede poner cosas en la barra de menu fixa-->
                     </li>
                 </ul>
-                <ul class="nav navbar-nav navbar-right user-nav">
-                    <li class="user-name blue-grey" style="color:cornflowerblue"><span>@Session["nombreusu"]</span></li>
-                    <li class="dropdown avatar-dropdown">
-                        <img src='@Session["ruta"]' class="img-circle avatar" alt="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" />
-                    </li>
-                    <li><a href="#" class="opener-right-menu"><span class="fa fa-envelope-o"></span></a></li>
-                    <li><a href="@Url.Action("Login", "Login")"><span class="fa fa-power-off" style="color:darkgreen;font-size:200%;margin-top:-15%"></span></a></li>
+                <div>
+                    <ul class="nav navbar-nav navbar-right user-nav" style="">
+                        <li class="user-name blue-grey" style="color:cornflowerblue;"><span>@Session["nombreusu"]</span></li>
+                        <li><img src='@Session["ruta"]' class="img-circle avatar" style="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" /></li>
 
-                </ul>
+                        @*<li>
+                            <a href="@Url.Action("Login", "Login")">
+                                <img src='~/imagenes/btnLogout.jpg' class="img-circle" style="width:17%;margin-top:-4%" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" />
+                            </a>
+                        </li>*@
+
+                        <li><a href="@Url.Action("Login", "Login")"><span class="fa fa-power-off" style="color:darkgreen;font-size:230%;margin-top:-15%"></span></a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </nav>
@@ -69,18 +74,10 @@
                         <h1 class="animated fadeInLeft">21:00</h1>
                         <p class="animated fadeInRight">Sat,October 1st 2029</p>
                     </li>
-                    <li><a href="@Url.Action("Index", "Home")"><span class="fa fa-home"></span> Panel Principal</a></li>
+                    <li><a href="@Url.Action("IndexUsuario", "Home")"><span class="fa fa-home"></span> Panel Principal</a></li>
 
-                    <li class="ripple">
-                        <a class="tree-toggle nav-header">
-                            <span class="fa-users fa"></span> Usuarios
-                            <span class="fa-angle-right fa right-arrow text-right"></span>
-                        </a>
-                        <ul class="nav nav-list tree">
-                            <li>@Html.ActionLink("Insertar Usuario", "InsertarUsuario", "Usuario")</li>
-                            <li>@Html.ActionLink("Manipular Datos", "ManipularDatos", "Usuario")</li>
-                        </ul>
-                    </li>
+                    <li><a href="@Url.Action("EditUsuario", "Usuario", new { @id = @Session["idUsu"] })"><span class="fa fa-user"></span> Perfil</a></li>
+
                     <li class="ripple">
                         <a class="tree-toggle nav-header">
                             <span class="fa-euro fa"></span> Cuentas
@@ -112,8 +109,8 @@
                             <li>@Html.ActionLink("Manipular Datos", "ManipularDatos", "Movimiento")</li>
                         </ul>
                     </li>
-                    <li><a href="@Url.Action("Grafico", "Home")"><span class="fa fa-pie-chart"></span> Graficos</a></li>
-                    <li><a href="@Url.Action("LibroCaja", "Movimiento")"><span class="fa fa-list-alt"></span> Caja General</a></li>
+                    @*<li><a href="@Url.Action("Grafico", "Home")"><span class="fa fa-pie-chart"></span> Graficos</a></li>
+        <li><a href="@Url.Action("LibroCaja", "Movimiento")"><span class="fa fa-list-alt"></span> Caja General</a></li>*@
                     <li class="ripple"><a href="#"></a></li>
                     <li class="ripple"><a href="#"></a></li>
                     <li class="ripple"><a href="#"></a></li>
@@ -155,8 +152,7 @@
                             <span class="fa-angle-right fa right-arrow text-right"></span>
                         </a>
                         <ul class="nav nav-list tree">
-                            <li>@Html.ActionLink("Insertar Usuario", "InsertarUsuario", "Usuario")</li>
-                            <li>@Html.ActionLink("Manipular Datos", "ManipularDatos", "Usuario")</li>
+                            <li>@Html.ActionLink("Perfil", "EditUsuario", "Usuario", new { @id = Session["idUsu"].ToString() })</li>
                         </ul>
                     </li>
                     <li class="ripple">
@@ -189,8 +185,8 @@
                             <li>@Html.ActionLink("Manipular Datos", "ManipularDatos", "Movimiento")</li>
                         </ul>
                     </li>
-                    <li><a href="@Url.Action("Grafico", "Home")"><span class="fa fa-pie-chart"></span> Graficos</a></li>
-                    <li><a href="@Url.Action("LibroCaja", "Movimiento")"><span class="fa fa-list-alt"></span> Caja General</a></li>
+                    @*<li><a href="@Url.Action("Grafico", "Home")"><span class="fa fa-pie-chart"></span> Graficos</a></li>
+                    <li><a href="@Url.Action("LibroCaja", "Movimiento")"><span class="fa fa-list-alt"></span> Caja General</a></li>*@
                     <li class="ripple"><a href="#"></a></li>
                     <li class="ripple"><a href="#"></a></li>
                     <li class="ripple"><a href="#"></a></li>

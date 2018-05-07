@@ -2,14 +2,10 @@
 @using PagedList.Mvc;
 @using homeFinanceMVC.Models;
 @{
-    if (Convert.ToInt32(Session["tipoUsu"]) == 1)
-    {
-        Layout = "~/Views/Shared/_Layout.cshtml";
-    }
-    else
-    {
-        Layout = "~/Views/Shared/_LayoutUsuario.cshtml";
-    }
+    /**/
+
+    ViewBag.Title = "ManupularDatosEvento2";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 
     if (TempData["mesaje"] != null)
     {
@@ -21,6 +17,7 @@
         <input hidden="hidden" value="10" id="del" />
     }
 }
+
 <div class="alert alert-info" role="alert">
     <h3>Lista de Eventos</h3>
 </div>
@@ -30,7 +27,7 @@
         @if (Model.Count() == 0)
         {
             <tr>
-                <td colspan="5" class="text-center">No hay Eventos a mostrar !!!</td>
+                <td colspan="5" class="text-center">No hay Eventos registrados !!!</td>
             </tr>
         }
         else
@@ -41,46 +38,41 @@
                     <th data-defaultsign="AZ">Descripción</th>
                     <th data-defaultsign="AZ">Tipo</th>
                     <th width="10%">Modificar</th>
-                    @if (Convert.ToInt32(Session["tipoUsu"]) == 1)
-                    {
-                        <th width="10%">Borrar</th>
-                    }
+                    <th width="10%">Borrar</th>
                 </tr>
             </thead>
 
-            string descTipo = "";
-
             foreach (var item in Model)
             {
-                if (@item.TipoEvento == "C")
-                {
-                    descTipo = "Credito";
-                }
-                else
-                {
-                    descTipo = "Debito";
-                }
+                //if (item.Tipo == 1)
+                //{
+                //    descTipo = "Administrador";
+                //}
+                //else
+                //{
+                //    descTipo = "Usuario";
+                //}
 
-            <tr>
-                <td>@item.IdEvento</td>
-                <td>@item.DescEvento</td>
-                <td>@descTipo</td>
-                <td>
-                    <button class="btn btn-warning" onclick="location.href='@Url.Action("EditEvento", "Evento", new { id = @item.IdEvento })'" type="button">Modificar</button>
-                </td>
-                @if (Convert.ToInt32(Session["tipoUsu"]) == 1)
-                {
+
+                <tr>
+                    <td>@item.IdEvento</td>
+                    <td>@item.DescEvento</td>
+                    <td>@item.TipoEvento</td>
+                    <td>
+                        <button class="btn btn-warning" onclick="location.href='@Url.Action("EditUsuario", "Usuario", new { id = @item.IdEvento })'" type="button">Modificar</button>
+                    </td>
                     <td>
                         <a href="#myModal" class="btn btn-danger delete" data-toggle="modal" data-id="@item.IdEvento">Eliminar</a>
                     </td>
-                }
-            </tr>
+                </tr>
             }
         }
     </table>
     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-    @Html.PagedListPager(Model, page => Url.Action("ManupularDatosEvento", new { page }))
+    @Html.PagedListPager(Model, page => Url.Action("ManupularDatosEvento2", new { page }))
 </div>
+
+
 
 
 @section scripts
@@ -104,7 +96,7 @@
 
     <script>
         $(".delete").click(function (eve) {
-            $("#modal-content").load("/Evento/DeleteEvento/" + $(this).data("id"));
+            $("#modal-content").load("/Usuario/DelUsuario/" + $(this).data("id"));
         });
     </script>
 }

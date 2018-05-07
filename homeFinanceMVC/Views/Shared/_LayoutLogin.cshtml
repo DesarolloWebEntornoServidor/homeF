@@ -5,14 +5,25 @@
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
 
+    <link rel="shortcut icon" href="~/imagenes/homefinance2.ico">
 
 
 </head>
-<body style=" background-image: url('../../imagenes/textura_azul.jpg');background-size:cover">
-    <div class="container">
-            <div class="col s6 m4 l8">@RenderBody()</div>
 
-        </div>
+<body style=" background-image: url('../../imagenes/textura_bordeada.jpg');background-size:cover">
+    <img src="~/imagenes/homefinance2.png" style="width:20%;margin-left:10%;margin-top:5%" />
+    <div class="container">
+        <div class="col s6 m4 l8">@RenderBody()</div>
+
+    </div>
 
 </body>
 </html>
+<style>
+    img {
+        position: absolute;
+        left: 30%;
+        top: -7%;
+        z-index: -1;
+    }
+</style>

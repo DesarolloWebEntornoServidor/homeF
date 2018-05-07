@@ -1,7 +1,13 @@
 ﻿@model homeFinanceMVC.Models.EvActivoPasivo
 @{
-    ViewBag.Title = "EditEvento";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (Convert.ToInt32(Session["tipoUsu"]) == 1)
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutUsuario.cshtml";
+    }
 }
 
 <div class="alert alert-info" role="alert">
@@ -13,7 +19,7 @@
 
 @using (Html.BeginForm("EditEvento", "Evento", FormMethod.Post))
 {
-    @Html.HiddenFor(x => x.IdEvento)
+    @Html.HiddenFor(model => model.IdEvento)
 
     <div class="form-horizontal">
         <div class="container">
@@ -53,7 +59,16 @@
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input type="submit" value="Guardar Datos" class="btn btn-primary" />
-                        @Html.ActionLink("Cancelar", "ManupularDatosEvento", null, new { @class = "btn btn-warning" })
+
+                        @if (Convert.ToInt32(Session["tipoUsu"]) == 1)
+                        {
+                             @Html.ActionLink("Cancelar", "ManupularDatosEvento", null, new { @class = "btn btn-warning" })
+                        }
+                        else
+                        {
+                             @Html.ActionLink("Cancelar", "IndexUsuario", "Home", null, new { @class = "btn btn-warning" })
+                        }
+
                     </div>
                 </div>
 

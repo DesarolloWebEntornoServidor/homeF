@@ -15,7 +15,6 @@ namespace homeFinanceMVC.Models
             MySqlConnection conectar = null;
             try
             {
-                 //conectar = new MySqlConnection("server=db735713258.db.1and1.com; database=db735713258; Uid=dbo735713258; pwd=Ray130270");
                  conectar = new MySqlConnection("server=db735710035.db.1and1.com; database=db735710035; Uid=dbo735710035; pwd=Ray130270");
 
                 //conectar = new MySqlConnection("server=127.0.0.1; database=homefinance; Uid=root; pwd=altair;");
@@ -33,9 +32,12 @@ namespace homeFinanceMVC.Models
 
         public static MySqlConnection CerrarConexion()
         {
-            MySqlConnection conectar = new MySqlConnection("server=127.0.0.1; database=homefinance; Uid=root; pwd=altair;");
+            //MySqlConnection conectar = new MySqlConnection("server=127.0.0.1; database=homefinance; Uid=root; pwd=altair;");
+
+              MySqlConnection conectar = new MySqlConnection("server=db735710035.db.1and1.com; database=db735710035; Uid=dbo735710035; pwd=Ray130270");
 
             conectar.Close();
+
             return conectar;
         }
 

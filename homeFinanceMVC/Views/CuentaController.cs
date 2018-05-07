@@ -18,7 +18,6 @@ namespace homeFinanceMVC.Views
 
         public ActionResult InsertarCuenta()
         {
-
             List<Usuario> lUsuarios = new List<Usuario>();
             lUsuarios = uDAO.ListarUsuarios();
             u = new Usuario("Select un Usuario");
@@ -51,7 +50,12 @@ namespace homeFinanceMVC.Views
 
         public ActionResult ManupularDatosCuenta(int? page)
         {
-            List<Cuenta> listaCuentas = ccDAO.ListarCuentas();
+            List<Cuenta> listaCuentas = ccDAO.ListarCuentasPorId(Convert.ToInt32(Session["idUsu"]));
+
+            if (Convert.ToInt32(Session["tipoUsu"]) == 1)
+            {
+                listaCuentas = ccDAO.ListarCuentas();
+            }
 
             int pageSize = 7;
             int pageNumber = (page ?? 1);

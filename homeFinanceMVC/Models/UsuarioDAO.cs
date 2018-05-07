@@ -27,7 +27,9 @@ namespace homeFinanceMVC.Models
 
                 return 0;
             }
-           
+
+            Conexion.CerrarConexion();
+
             return retorno;
         }
 
@@ -39,6 +41,9 @@ namespace homeFinanceMVC.Models
                 "{7}", u.Login, Utilitarios.Encriptar(u.Password), u.Nombre, u.Tipo, u.Situacion, u.Ruta, u.Foto, u.IdUsuario), Conexion.ObtenerConexion());
 
             retorno = comando.ExecuteNonQuery();
+
+            Conexion.CerrarConexion();
+
             return retorno;
         }
 
@@ -66,9 +71,7 @@ namespace homeFinanceMVC.Models
                     usus.Ruta = "";
                 }
 
-                //usus.Foto = codigos.GetByte[](6);
-
-
+                Conexion.CerrarConexion();
 
                 lista.Add(usus);
             }
@@ -142,8 +145,10 @@ namespace homeFinanceMVC.Models
             }
             catch (Exception)
             {
-                Conexion.CerrarConexion();
+               
             }
+
+            Conexion.CerrarConexion();
 
             return retorno;
         }
@@ -166,6 +171,8 @@ namespace homeFinanceMVC.Models
                 lista.Add(usus);
             }
 
+            Conexion.CerrarConexion();
+
             return lista;
         }
 
@@ -182,8 +189,10 @@ namespace homeFinanceMVC.Models
             catch (Exception)
             {
 
-                Conexion.CerrarConexion();
+                
             }
+
+            Conexion.CerrarConexion();
 
             return retorno;
 

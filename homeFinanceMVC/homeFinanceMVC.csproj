@@ -306,6 +306,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="imagenes\avatar.jpg" />
+    <Content Include="imagenes\btnLogout.jpg" />
     <Content Include="imagenes\delete.png" />
     <Content Include="imagenes\edit.png" />
     <Content Include="imagenes\homefinance2.ico" />
@@ -458,6 +459,8 @@
     <Content Include="Views\Evento\DeleteEvento.cshtml" />
     <Content Include="Views\Evento\EditEvento.cshtml" />
     <Content Include="Views\Login\Registrar.cshtml" />
+    <Content Include="Views\Home\IndexUsuario.cshtml" />
+    <Content Include="Views\Shared\_LayoutUsuario.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
