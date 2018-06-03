@@ -26,6 +26,8 @@
     @Styles.Render("~/Content/jqueryui")
     @Scripts.Render("~/bundles/modernizr")
 
+    <script src="@Url.Content("~/Scripts/jquery-2.1.1.min.js" )" type="text/javascript"></script>
+
 </head>
 <body id="mimin" class="dashboard"  style=" background-image: url('../../imagenes/textura_bordeada.jpg');background-size:cover">
     <!-- start: Header -->
@@ -50,9 +52,8 @@
                     <li class="dropdown avatar-dropdown">
                         <img src='@Session["ruta"]' class="img-circle avatar" alt="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" />
                     </li>
-                    <li><a href="#" class="opener-right-menu"><span class="fa fa-envelope-o"></span></a></li>
+                  @*  <li><a href="#" class="opener-right-menu"><span class="fa fa-envelope-o"></span></a></li>*@
                     <li><a href="@Url.Action("Login", "Login")"><span class="fa fa-power-off" style="color:darkgreen;font-size:200%;margin-top:-15%"></span></a></li>
-
                 </ul>
             </div>
         </div>

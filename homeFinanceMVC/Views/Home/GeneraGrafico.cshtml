@@ -3,13 +3,19 @@
     ViewBag.Title = "GeneraGrafico";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    string deForm = Session["de"].ToString();
-    string hastaForm = Session["hasta"].ToString();
+    string deForm = "";
+    string hastaForm = "";
+
+    if (Session["de"].ToString() != "" && Session["hasta"].ToString() != "")
+    {
+        deForm = Session["de"].ToString();
+        hastaForm = Session["hasta"].ToString();
+    }
 
     string tp = Session["tipo"].ToString();
 
 
-    if(tp == "rece")
+    if (tp == "rece")
     {
         tp = "Entradas";
     }
@@ -18,19 +24,41 @@
         tp = "Despiezas";
     }
 
+    int noGenera = 0;
+    if (TempData["NoGenera"] != null)
+    {
+        <input hidden="hidden" value="10" id="delCancelado" />
+        noGenera = 1;
+    }
+
 }
 
-<div class="alert alert-info" role="alert">
-    <h3 style="color:blue;margin-left:10px">Grafico de <b> @tp </b> del Periodo De <b>@deForm</b>  Hasta <b>@hastaForm</b></h3>
-</div>
+@if (noGenera > 0)
+{
+    <div class="alert alert-danger" role="alert">
+        NO Existen Valores en ese Periodo para Generar el Grafico!
+    </div>
 
-
-<div class="row" style="margin-left:25%">
-    <div class="col-md-4">
-        <button type="button" id="chartBtn" class="btn btn-primary pulse">Generar Grafico</button>
+    <div style="margin-left:20%;">
         @Html.ActionLink("Volver", "Grafico", "Home", null, new { @class = "btn btn-info" })
     </div>
-</div>
+}
+else
+{
+    <div class="alert alert-info" role="alert">
+        <h3 style="color:blue;margin-left:10px">Grafico de <b> @tp </b> del Periodo De <b>@deForm</b>  Hasta <b>@hastaForm</b></h3>
+    </div>
+
+
+    <div class="row" style="margin-left:25%">
+        <div class="col-md-4">
+            <button type="button" id="chartBtn" class="btn btn-primary pulse">Generar Grafico</button>
+            @Html.ActionLink("Volver", "Grafico", "Home", null, new { @class = "btn btn-info" })
+        </div>
+    </div>
+}
+
+
 
 <main>
     <div class="row">
@@ -114,7 +142,6 @@
 
 
     </script>
-
 
 
 }

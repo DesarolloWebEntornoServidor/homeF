@@ -60,10 +60,6 @@ namespace homeFinanceMVC.Controllers
         [HttpPost]
         public ActionResult GeneraGrafico(FormCollection form)
         {
-
-            string deForm = form["de"].ToString();
-            string hastaForm = form["hasta"].ToString();
-
             string tp = form["rbTipo"].ToString();
 
             if (tp == "desp")
@@ -71,8 +67,33 @@ namespace homeFinanceMVC.Controllers
             else
                 Session["tipo"] = "rece";
 
+            string deForm = form["de"].ToString();
+            string hastaForm = form["hasta"].ToString();
+
+            if (deForm == "" || hastaForm == "")
+            {
+                Session["de"] = "";
+                Session["hasta"] = "";
+
+                TempData["NoGenera"] = "Sin Valores para esa Fecha";
+
+                return View();
+            }       
+
             Session["de"] = deForm;
             Session["hasta"] = hastaForm;
+
+            string tipo = "D";
+
+            if (tp == "rece")
+                tipo = "C";
+
+            var data = mDAO.ObtenerValoresDelGrafico(deForm, hastaForm, tipo);
+
+            if (data.Count == 0)
+            {
+                TempData["NoGenera"] = "Sin Valores para esa Fecha";
+            }
 
             return View();
 
@@ -89,7 +110,13 @@ namespace homeFinanceMVC.Controllers
             if (tp == "rece")
                 tipo = "C";
 
-            var data = mDAO.ObtenerValoresDelGrafico(deForm, hastaForm, tipo);
+            var data = mDAO.ObtenerValoresDelGrafico(deForm, hastaForm, tipo);           
+
+            //if (data.Count == 0)
+            //{
+            //    TempData["mesajeGrafico"] = "Sin Valores para esa Fecha";
+            //    return RedirectToAction("Grafico", "Home");
+            //}
 
             var dataforchart = data.Select(x => new { name = x.DescMov, y = x.Valor });
 

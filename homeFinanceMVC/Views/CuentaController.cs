@@ -19,17 +19,34 @@ namespace homeFinanceMVC.Views
         public ActionResult InsertarCuenta()
         {
             List<Usuario> lUsuarios = new List<Usuario>();
-            lUsuarios = uDAO.ListarUsuarios();
-            u = new Usuario("Select un Usuario");
-            lUsuarios.Insert(0, u);
+
+            if (Convert.ToInt32(Session["tipoUsu"]) == 2)
+            {
+                u = new Usuario(Convert.ToInt32(Session["idUsu"]), Session["nombreusu"].ToString());
+                lUsuarios.Add(u);
+            }
+            else
+            {
+                lUsuarios = uDAO.ListarUsuarios();
+                u = new Usuario("Select un Usuario");
+                lUsuarios.Insert(0, u);
+            }
+
             ViewBag.listaUsuarios = lUsuarios;
 
             return View();
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult GuardarDatos(Cuenta cuenta)
+        public ActionResult GuardarDatos(FormCollection form, Cuenta cuenta)
         {
+            List<Cuenta> listaCuentas = ccDAO.ListarCuentasPorId(Convert.ToInt32(Session["idUsu"]));
+
+            if (Convert.ToInt32(Session["tipoUsu"]) == 2)
+            {
+                cuenta.IdUsuario = Convert.ToInt32(Session["idUsu"]);
+            }
+
             if (!ModelState.IsValid)
             {
                 List<Usuario> lUsuarios = new List<Usuario>();

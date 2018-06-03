@@ -21,8 +21,6 @@ namespace homeFinanceMVC.Controllers
             return View();
         }
 
-
-
         [HttpPost]
         public ActionResult Login(string login, string password)
         {

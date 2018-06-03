@@ -34,19 +34,19 @@
                     </div>
                 </div>
                 @if (Convert.ToInt32(Session["tipoUsu"]) == 1)
-    {
-            <div class="form-group">
-                <label class="control-label col-md-2">Usuario</label>
-                <div class="col-md-10">
-                    @Html.DropDownList("idUsuario", new SelectList(ViewBag.listaUsuarios, "idUsuario", "nombre"), new { @class = "form-control inputstl bor" })
-                    @Html.ValidationMessageFor(model => model.IdUsuario, "", new { @class = "label label-danger" })
-                </div>
-            </div>
-}
-else
-{
-            @Html.HiddenFor(x => x.IdUsuario)
-}
+                {
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Usuario</label>
+                            <div class="col-md-10">
+                                @Html.DropDownList("idUsuario", new SelectList(ViewBag.listaUsuarios, "idUsuario", "nombre"), new { @class = "form-control inputstl bor" })
+                                @Html.ValidationMessageFor(model => model.IdUsuario, "", new { @class = "label label-danger" })
+                            </div>
+                        </div>
+                }
+                else
+                {
+                            @Html.HiddenFor(x => x.IdUsuario)
+                }
                 <br />
                 <br />
 
@@ -60,7 +60,7 @@ else
                         }
                         else
                         {
-                            @Html.ActionLink("Cancelar", "IndexUsuario", "Home", null, new { @class = "btn btn-warning" })
+                            @Html.ActionLink("Cancelar", "ManupularDatosCuenta", null, new { @class = "btn btn-warning" })
                         }
 
                     </div>

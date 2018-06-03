@@ -14,80 +14,86 @@
     {
         <input hidden="hidden" value="10" id="del" />
     }
+
+    int noDeleta = 0;
+    if (TempData["mesajeDeleteCancelado"] != null)
+    {
+        <input hidden="hidden" value="10" id="delCancelado" />
+        noDeleta = 1;
+    }
+
 }
 
-        <div class="alert alert-info" role="alert">
-            <h3>Lista de Usuarios</h3>
-        </div>
+<div class="alert alert-info" role="alert">
+    <h3>Lista de Usuarios</h3>
+</div>
 
-        <div class="table-responsive" style="width:95%;margin-left:2.5%">
-            <table class="table table-condensed table-hover sortable table-responsive">
-                @if (Model.Count() == 0)
+<div class="table-responsive" style="width:95%;margin-left:2.5%">
+    <table class="table table-condensed table-hover sortable table-responsive">
+        @if (Model.Count() == 0)
         {
             <tr>
                 <td colspan="5" class="text-center">No hay usuarios registrados !!!</td>
             </tr>
-}
-else
-{
-        <thead>
-            <tr class="" style="background-color:cornflowerblue;color:darkblue">
-                <th data-defaultsign="_19">ID</th>
-                <th data-defaultsign="AZ">Nombre</th>
-                <th data-defaultsign="AZ">Login</th>
-                <th data-defaultsign="AZ">Tipo</th>
-                <th data-defaultsort="AZ">Situación</th>
-                <th>Imagen</th>
-                <th width="10%">Modificar</th>
-                <th width="10%">Borrar</th>
-            </tr>
-        </thead>
-
-string descTipo = "";
-string descSit = "";
-
-foreach (var item in Model)
-{
-    if (item.Tipo == 1)
-    {
-        descTipo = "Administrador";
-    }
-    else
-    {
-        descTipo = "Usuario";
-    }
-
-    if (item.Situacion == 0)
-    {
-        descSit = "Inactivo";
-    }
-    else
-    {
-        descSit = "Activo";
-    }
-
-        <tr>
-            <td>@item.IdUsuario</td>
-            <td>@item.Nombre</td>
-            <td>@item.Login</td>
-            <td>@descTipo</td>
-            <td>@descSit</td>
-            <td width="10%"><img src="@item.Ruta" width="60%" height="auto" alt="" /></td>
-            <td>
-                <button class="btn btn-warning" onclick="location.href='@Url.Action("EditUsuario", "Usuario", new { id = @item.IdUsuario })'" type="button">Modificar</button>
-            </td>
-            <td>
-                <a href="#myModal" class="btn btn-danger delete" data-toggle="modal" data-id="@item.IdUsuario">Eliminar</a>
-            </td>
-        </tr>
         }
-    }
+        else
+        {
+            <thead>
+                <tr class="" style="background-color:cornflowerblue;color:darkblue">
+                    <th data-defaultsign="_19">ID</th>
+                    <th data-defaultsign="AZ">Nombre</th>
+                    <th data-defaultsign="AZ">Login</th>
+                    <th data-defaultsign="AZ">Tipo</th>
+                    <th data-defaultsort="AZ">Situación</th>
+                    <th>Imagen</th>
+                    <th width="10%">Modificar</th>
+                    <th width="10%">Borrar</th>
+                </tr>
+            </thead>
+
+            string descTipo = "";
+            string descSit = "";
+
+            foreach (var item in Model)
+            {
+                if (item.Tipo == 1)
+                {
+                    descTipo = "Administrador";
+                }
+                else
+                {
+                    descTipo = "Usuario";
+                }
+
+                if (item.Situacion == 0)
+                {
+                    descSit = "Inactivo";
+                }
+                else
+                {
+                    descSit = "Activo";
+                }
+
+                <tr>
+                    <td>@item.IdUsuario</td>
+                    <td>@item.Nombre</td>
+                    <td>@item.Login</td>
+                    <td>@descTipo</td>
+                    <td>@descSit</td>
+                    <td width="10%"><img src="@item.Ruta" width="60%" height="auto" alt="" /></td>
+                    <td>
+                        <button class="btn btn-warning" onclick="location.href='@Url.Action("EditUsuario", "Usuario", new { id = @item.IdUsuario })'" type="button">Modificar</button>
+                    </td>
+                    <td>
+                        <a href="#myModal" class="btn btn-danger delete" data-toggle="modal" data-id="@item.IdUsuario">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        }
     </table>
     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
     @Html.PagedListPager(Model, page => Url.Action("ManipularDatos", new { page }))
 </div>
-
-
 
 
 @section scripts
@@ -97,6 +103,14 @@ foreach (var item in Model)
         $(document).ready(function () {
             if ($("#del").val().length > 0) {
                 swal("Enhorabuena!", "Usuario Borrado con Exito!", "success");
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            if ($("#delCancelado").val().length > 0) {
+                swal("Error!", "No se Puede Borrar el Usuario Logeado!", "error");
             }
         });
     </script>

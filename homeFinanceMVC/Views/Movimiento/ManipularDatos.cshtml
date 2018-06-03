@@ -1,7 +1,13 @@
 ﻿
 @{
-    ViewBag.Title = "ManipularDatos";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (Convert.ToInt32(Session["tipoUsu"]) == 1)
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutUsuario.cshtml";
+    }
 }
 
 <div class="alert alert-info" role="alert">
@@ -19,7 +25,7 @@
     });
 </script>
 
-@using (Html.BeginForm("MostrarMovimientos", "Movimiento", FormMethod.Post))
+@using (Html.BeginForm("ManipularDatos", "Movimiento", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 

@@ -85,11 +85,17 @@ namespace homeFinanceMVC.Views
 
         public ActionResult DelUsuario(string id)
         {
+            int verificaId = Convert.ToInt32(Session["idUsu"]);
+
+            if (verificaId == Convert.ToInt32(id))
+            {
+                TempData["mesajeDeleteCancelado"] = "mensagem";
+            }
+
             usu = uDAO.ObtenerUsuarioPorId(Convert.ToInt32(id));
 
-            return View(usu);
-         
 
+            return View(usu);       
         }
 
         public ActionResult DelUsuarioConfirma(string id)
@@ -98,8 +104,7 @@ namespace homeFinanceMVC.Views
 
             TempData["mesajeDelete"] = "mensagem Ok";
 
-            return RedirectToAction("ManipularDatos", "Usuario");
-
+           return RedirectToAction("ManipularDatos", "Usuario");
         }
 
         public ActionResult EditUsuario(string id)
@@ -113,12 +118,14 @@ namespace homeFinanceMVC.Views
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult EditUsuario(HttpPostedFileBase file1, Usuario usu, string ruta, FormCollection form)
         {
+            
+
             if (!ModelState.IsValid)
             {
                 return View("EditUsuario", usu);
             }
 
-            TempData["mesaje"] = "mensagem Ok";
+            //TempData["mesaje"] = "mensagem Ok";
 
             usu = uDAO.ObtenerUsuarioPorId(Convert.ToInt32(form["IdUsuario"]));
 
@@ -148,37 +155,65 @@ namespace homeFinanceMVC.Views
             {
                 using (MemoryStream ms = new MemoryStream())
                 {
-                    file1.InputStream.CopyTo(ms);
-                    byte[] array = ms.GetBuffer();
+                    TempData["formatoImagen"] = null;
+                    try
+                    {
+                        file1.InputStream.CopyTo(ms);
+                        byte[] array = ms.GetBuffer();
 
-                    usu.Foto = array;
+                        usu.Foto = array;
 
-                    rutaNew = Server.MapPath(("~") + "//imagenes");
-                    string strFilename = Path.GetFileName(file1.FileName);
+                        rutaNew = Server.MapPath(("~") + "//imagenes");
+                        string strFilename = Path.GetFileName(file1.FileName);
 
-                    string archivo = "";
+                        string archivo = "";
+                        string extension = "";
 
-                    if (strFilename != "")
+                        string nex = strFilename.Substring(strFilename.Length - 3);
+
+                        if (strFilename != "")
+                        {
+
+                            if (!Directory.Exists(rutaNew))
+                                Directory.CreateDirectory(rutaNew);
+
+                            archivo = String.Format("{0}//{1}", rutaNew, strFilename);
+
+                            file1.SaveAs(archivo);
+
+                            extension = Path.GetExtension(strFilename);
+
+                            if (nex != "jpg" && nex != "JPG" && nex != "png" && nex != "PNG")
+                            {
+                                TempData["formatoImagen"] = "No Soportado";
+
+                                return View("EditUsuario", usu);
+                            }
+
+                            usu.Ruta = "/imagenes/" + strFilename;
+
+                        }
+                    }
+                    catch (Exception)
                     {
 
-                        if (!Directory.Exists(rutaNew))
-                            Directory.CreateDirectory(rutaNew);
+                        TempData["formatoImagen"] = "No Soportado";
 
-                        archivo = String.Format("{0}//{1}", rutaNew, strFilename);
-
-                        file1.SaveAs(archivo);
-
-                        string extension = Path.GetExtension(strFilename);
-
-                        usu.Ruta = "/imagenes/" + strFilename;
-
+                        return View("EditUsuario", usu);
                     }
+                  
                 }
             }
 
             uDAO.ModificarUsuario(usu);
 
-            if(Convert.ToInt32(Session["tipoUsu"]) == 2)
+            if (Convert.ToInt32(Session["idUsu"]) == usu.IdUsuario)
+            {
+                Session["ruta"] = usu.Ruta;
+            }
+
+
+            if (Convert.ToInt32(Session["tipoUsu"]) == 2)
                 return RedirectToAction("IndexUsuario", "Home");
 
             return RedirectToAction("ManipularDatos", "Usuario");

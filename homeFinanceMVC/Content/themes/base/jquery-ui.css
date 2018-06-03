@@ -380,12 +380,12 @@ button.ui-button::-moz-focus-inner {
 }
 .ui-datepicker td {
 	border: 0;
-	padding: 1px;
+	padding: 0.5px;
 }
 .ui-datepicker td span,
 .ui-datepicker td a {
 	display: block;
-	padding: .2em;
+	padding: .1em;
 	text-align: right;
 	text-decoration: none;
 }

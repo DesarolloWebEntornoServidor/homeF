@@ -10,6 +10,12 @@
     {
         Layout = "~/Views/Shared/_LayoutUsuario.cshtml";
     }
+
+    if (TempData["formatoImagen"] != null)
+    {
+        <input hidden="hidden" value="10" id="mens" />
+    }
+
 }
 
 <div class="alert alert-info" role="alert">
@@ -143,5 +149,13 @@
             border: none;
         }
     </style>
+
+    <script>
+            $(document).ready(function () {
+                if ($("#mens").val().length > 0) {
+                    swal("error!", "La imagen debe ser jpg o png!", "error");
+                }
+            });
+    </script>
 }
 

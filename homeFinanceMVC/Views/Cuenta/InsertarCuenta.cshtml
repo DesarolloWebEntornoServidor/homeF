@@ -13,17 +13,21 @@
 
     if (TempData["mesaje"] != null)
     {
-            <input hidden="hidden" value="10" id="mens" />
+        <input hidden="hidden" value="10" id="mens" />
+    }
+
+    if (Convert.ToInt32(Session["tipoUsu"]) == 2)
+    {
+        int nn = Convert.ToInt32(Session["idUsu"]);
+        
     }
 }
-
     <div class="alert alert-info" role="alert">
         <h3>Insertar Cuenta</h3>
     </div>
 
     @using (Html.BeginForm("GuardarDatos", "Cuenta", FormMethod.Post))
     {
-
         <div class="form-horizontal">
             <div class="container">
 
@@ -38,13 +42,20 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-md-2">Cuenta</label>
-                        <div class="col-md-10">
-                            @Html.DropDownList("idUsuario", new SelectList(ViewBag.listaUsuarios, "idUsuario", "nombre"), new { @class = "form-control inputstl bor" })
-                            @Html.ValidationMessageFor(model => model.IdUsuario, "", new { @class = "label label-danger" })
+                    @*@if (Convert.ToInt32(Session["tipoUsu"]) == 1)
+                    {*@
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Usuario</label>
+                            <div class="col-md-10">
+                                @Html.DropDownList("idUsuario", new SelectList(ViewBag.listaUsuarios, "idUsuario", "nombre"), new { @class = "form-control inputstl bor" })
+                                @Html.ValidationMessageFor(model => model.IdUsuario, "", new { @class = "label label-danger" })
+                            </div>
                         </div>
-                    </div>
+                    @*}
+                    else
+                    {
+                        @Html.HiddenFor(model => model.IdUsuario)
+                    }*@
 
                     <br />
                     <br />

@@ -37,6 +37,11 @@ namespace homeFinanceMVC.Models
         {
             this.nombre = nombre;
         }
+        public Usuario(int idUsuario, string nombre)
+        {
+            this.idUsuario = idUsuario;
+            this.nombre = nombre;
+        }
         #region Propiedades
         public int IdUsuario
         {

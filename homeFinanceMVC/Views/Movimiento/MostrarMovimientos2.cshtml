@@ -22,125 +22,150 @@
     {
         <input hidden="hidden" value="10" id="del" />
     }
+
+    decimal saldo = 0;
+
+    int noGenera = 0;
+    if (TempData["NoGenera"] != null)
+    {
+        <input hidden="hidden" value="10" id="delCancelado" />
+        noGenera = 1;
+    }
+    if (ViewBag.Saldo != null)
+    {
+        saldo = ViewBag.Saldo;
+    }
+
 }
 
 <div class="alert alert-info" role="alert">
     <h3>Movimientos</h3>
 </div>
 
-<div class="table-responsive" style="width:95%;margin-left:2.5%">
-    <table class="table table-condensed table-hover table-responsive">
-        @if (Model == null)
-        {
-            <tr>
-                <td colspan="5" class="text-center">No hay Movimientos para estas Fechas !!!</td>
-            </tr>
-        }
-        else
-        {
-            <thead>
-                <tr class="" style="background-color:cornflowerblue;color:darkblue">
-                    <th>Fecha</th>
-                    <th data-defaultsign="AZ">Evento</th>
-                    <th data-defaultsign="AZ">Descripción</th>
-                    <th data-defaultsign="AZ">Cuenta</th>
-                    <th data-defaultsort="_19">Valor</th>
-                    <th width="10%">Modificar</th>
-                    <th width="10%">Borrar</th>
-                </tr>
-            </thead>
+@if (noGenera > 0)
+{
+    <div class="alert alert-danger" role="alert">
+        NO Existen Valores en ese Periodo para Generar el Grafico!
+    </div>
 
-            foreach (var item in Model)
+    <div style="margin-left:20%;">
+        @Html.ActionLink("Volver", "ManipularDatos", "Movimiento", null, new { @class = "btn btn-info" })
+    </div>
+}
+else
+{
+
+    <div class="table-responsive" style="width:95%;margin-left:2.5%">
+        <table class="table table-condensed table-hover table-responsive">
+            @if (Model == null)
             {
-                string cor = "red";
-                string fecha = String.Format("{0:dd/MM/yyyy}", item.Fecha).Substring(0, 10);
 
-                EvActivoPasivoDAO eDAO = new EvActivoPasivoDAO();
-                EvActivoPasivo ev = eDAO.ObtenerEvento(item.IdEvento);
-
-                CuentaDAO cDAO = new CuentaDAO();
-                Cuenta c = cDAO.ObtenerCuenta(item.IdCuenta);
-
-                if (@ev.TipoEvento.ToString().Trim() == "C")
-                {
-                    cor = "green";
-                }
-
-                <tr>
-                    <td>@fecha</td>
-                    <td>@ev.DescEvento</td>
-                    <td>@item.DescMov</td>
-                    <td>@c.DescCuenta</td>
-                    <td style="text-align:right;color:@cor">@item.Valor.ToString("N2")</td>
-                    <td><button class="btn btn-warning" onclick="location.href='@Url.Action("EditMovimiento", "Movimiento", new { id = item.IdMov })'" type="button">Modificar</button></td>
-                    <td>
-                        <a href="#myModal" class="btn btn-danger delete" data-toggle="modal" data-id="@item.IdMov">Eliminar</a>
-
-                    </td>
-                </tr>
             }
-        }
-    </table>
-    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-    @Html.PagedListPager(Model, page => Url.Action("MostrarMovimientos2", new { page }))
+            else
+            {
+                <thead>
+                    <tr class="" style="background-color:cornflowerblue;color:darkblue">
+                        <th>Fecha</th>
+                        <th data-defaultsign="AZ">Evento</th>
+                        <th data-defaultsign="AZ">Descripción</th>
+                        <th data-defaultsign="AZ">Cuenta</th>
+                        <th data-defaultsort="_19">Valor</th>
+                        <th width="10%">Modificar</th>
+                        <th width="10%">Borrar</th>
+                    </tr>
+                </thead>
 
-</div>
-<hr />
+                foreach (var item in Model)
+                {
+                    string cor = "red";
+                    string fecha = String.Format("{0:dd/MM/yyyy}", item.Fecha).Substring(0, 10);
+
+                    EvActivoPasivoDAO eDAO = new EvActivoPasivoDAO();
+                    EvActivoPasivo ev = eDAO.ObtenerEvento(item.IdEvento);
+
+                    CuentaDAO cDAO = new CuentaDAO();
+                    Cuenta c = cDAO.ObtenerCuenta(item.IdCuenta);
+
+                    if (@ev.TipoEvento.ToString().Trim() == "C")
+                    {
+                        cor = "green";
+                    }
+
+                    <tr>
+                        <td>@fecha</td>
+                        <td>@ev.DescEvento</td>
+                        <td>@item.DescMov</td>
+                        <td>@c.DescCuenta</td>
+                        <td style="text-align:right;color:@cor">@item.Valor.ToString("N2")</td>
+                        <td><button class="btn btn-warning" onclick="location.href='@Url.Action("EditMovimiento", "Movimiento", new { id = item.IdMov })'" type="button">Modificar</button></td>
+                        <td>
+                            <a href="#myModal" class="btn btn-danger delete" data-toggle="modal" data-id="@item.IdMov">Eliminar</a>
+
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        @Html.PagedListPager(Model, page => Url.Action("MostrarMovimientos2", new { page }))
+
+    </div>
+    <hr />
+}
 
 
-
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Desea Borrar el Movimiento</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div id="modal-content">
-                    <div style="text-align:center;display:none" id="loaderDiv">
-                        <img src="~/imagenes/loader.gif" width="150" />
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Desea Borrar el Movimiento</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="modal-content">
+                        <div style="text-align:center;display:none" id="loaderDiv">
+                            <img src="~/imagenes/loader.gif" width="150" />
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
+                <div class="modal-footer">
 
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!-- Modal -->
+    <!-- Modal -->
 
 
-@section scripts
+    @section scripts
 {
 
-    <script>
-        $(".delete").click(function (eve) {
-            $("#loaderDiv").show();
-            $("#modal-content").load("/Movimiento/DeleteMovimiento/" + $(this).data("id"));
-        });
-    </script>
+        <script>
+            $(".delete").click(function (eve) {
+                $("#loaderDiv").show();
+                $("#modal-content").load("/Movimiento/DeleteMovimiento/" + $(this).data("id"));
+            });
+        </script>
 
-    <script>
-        $(document).ready(function () {
-            if ($("#del").val().length > 0) {
-                swal("Enhorabuena!", "Movimiento Borrado con Exito!", "success");
-            }
-        });
-    </script>
+        <script>
+            $(document).ready(function () {
+                if ($("#del").val().length > 0) {
+                    swal("Enhorabuena!", "Movimiento Borrado con Exito!", "success");
+                }
+            });
+        </script>
 
-    <script>
-        $(document).ready(function () {
-            if ($("#mens").val().length > 0) {
-                swal("Enhorabuena!", "Movimiento Modificado con Exito!", "success");
-            }
-        });
-    </script>
+        <script>
+            $(document).ready(function () {
+                if ($("#mens").val().length > 0) {
+                    swal("Enhorabuena!", "Movimiento Modificado con Exito!", "success");
+                }
+            });
+        </script>
 
-}
+    }
 
 

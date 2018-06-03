@@ -145,11 +145,26 @@ namespace homeFinanceMVC.Views
             string deForm = form["de"].ToString();
             string hastaForm = form["hasta"].ToString();
 
+            if (deForm == "" || hastaForm == "")
+            {
+                Session["de"] = "";
+                Session["hasta"] = "";
+
+                TempData["NoGenera"] = "Sin Valores para esa Fecha";
+
+                return View();
+            }
+
             decimal saldo = cDAO.ConsultarSaldoLibroCaja(deForm);
 
             ViewBag.Saldo = saldo;
 
             List<Object> listaLibro = mDAO.MovimientosLibro(deForm, hastaForm);
+
+            if (listaLibro.Count == 0)
+            {
+                TempData["NoGenera"] = "Sin Valores para esa Fecha";
+            }
 
             return View("MostrarLibro",listaLibro);
 
@@ -161,12 +176,21 @@ namespace homeFinanceMVC.Views
         }
 
         [HttpPost]
-        public ActionResult MostrarMovimientos(FormCollection form)
+        public ActionResult ManipularDatos(FormCollection form)
         {
 
             string deForm = form["de"].ToString();
             string hastaForm = form["hasta"].ToString();
 
+            if (deForm == "" || hastaForm == "")
+            {
+                Session["de"] = "";
+                Session["hasta"] = "";
+
+                TempData["NoGenera"] = "Sin Valores para esa Fecha";
+
+                return View();
+            }
             Session["de"] = deForm;
             Session["hasta"] = hastaForm;
 

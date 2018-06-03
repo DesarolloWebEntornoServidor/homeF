@@ -1,7 +1,6 @@
 ﻿
 @{
     ViewBag.Title = "Grafico";
-
 }
 
 <script type="text/javascript" language="javascript">
@@ -24,24 +23,24 @@
             <div class="form-group col-md-10">
                 <div class="row" style="width:95%;margin-left:2.5%">
                     <label class="control-label" style="margin-right:2%;color:darkblue">Tipo de Grafico</label>
-                        @Html.RadioButton("rbTipo", "desp", isChecked: true) @Html.Label("Despiezas", new { @Style = "margin-right:2%" })
-                        @Html.RadioButton("rbTipo", "rece", isChecked: false) @Html.Label("Entradas")
+                    @Html.RadioButton("rbTipo", "desp", isChecked: true) @Html.Label("Despiezas", new { @Style = "margin-right:2%" })
+                    @Html.RadioButton("rbTipo", "rece", isChecked: false) @Html.Label("Entradas")
                 </div>
             </div>
-                <hr />
+            <hr />
 
-                <div class="form-group col-md-10">
-                    <div class="row" style="width:100%">
-                        <label class="control-label" style="color:darkblue">Fecha de</label>
-                        @Html.TextBox("de", "", new { @class = "datepicker inputstl" })
+            <div class="form-group col-md-10">
+                <div class="row" style="width:100%">
+                    <label class="control-label" style="color:darkblue">Fecha de</label>
+                    @Html.TextBox("de", "", new { @class = "datepicker inputstl" })
 
-                        <label class="control-label" style="color:darkblue">Hasta</label>
-                        @Html.TextBox("hasta", "", new { @class = "datepicker inputstl" })
-                        <input type="submit" value="Colectar Datos" class="btn btn-primary" style="margin-left:2%" />
-                    </div>
-
+                    <label class="control-label" style="color:darkblue">Hasta</label>
+                    @Html.TextBox("hasta", "", new { @class = "datepicker inputstl" })
+                    <input type="submit" value="Colectar Datos" class="btn btn-primary" style="margin-left:2%" />
                 </div>
+
             </div>
+        </div>
     </div>
 
 

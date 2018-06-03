@@ -2,11 +2,25 @@
 @using homeFinanceMVC.Models
 @{
     Layout = null;
+
+    int noDeleta = 0;
+    if (TempData["mesajeDeleteCancelado"] != null)
+    {
+        <input hidden="hidden" value="10" id="delCancelado" />
+        noDeleta = 1;
+    }
 }
 
 
 @using (Html.BeginForm("DelUsuarioConfirma", "Usuario", new { id = @Model.IdUsuario }))
 {
+
+    if (noDeleta > 0)
+    {
+        <div class="alert alert-danger" role="alert">
+            El usuario Logeado NO Puede ser Borrado!
+        </div>
+    }
 
     string usuTipo = "Usuario";
     if (@Model.Tipo != 1)
@@ -41,8 +55,17 @@
                 </div>
             </div>
 
-            @Html.ActionLink("Confirma", "DelUsuarioConfirma", new { id = Model.IdUsuario }, new { @class = "btn btn-danger" })
-            @Html.ActionLink("Cancelar", "ManipularDatos", "Usuario", null, new { @class = "btn btn-warning" })
+            @if (noDeleta == 0)
+            {
+                @Html.ActionLink("Confirma", "DelUsuarioConfirma", new { id = Model.IdUsuario }, new { @class = "btn btn-danger" })
+                @Html.ActionLink("Cancelar", "ManipularDatos", "Usuario", null, new { @class = "btn btn-warning" })
+            }
+            else
+            {
+                    @Html.ActionLink("Volver", "ManipularDatos", "Usuario", null, new { @class = "btn btn-info" })
+            }
+
+
             @*@Html.ActionLink("Confirma", "DelUsuarioConfirma", new { id = Model.IdUsuario }, new { @class = "btn btn-danger", onClick = "swal('¡enhorabuena!', 'Usuario Borrado con Exito!', 'success')" })*@
 
         </div>
@@ -69,4 +92,11 @@
         }
     </style>
 
+    <script>
+        $(document).ready(function () {
+            if ($("#delCancelado").val().length > 0) {
+                swal("Error!", "No se Puede Borrar el Usuario Logeado!", "error");
+            }
+        });
+    </script>
 }
