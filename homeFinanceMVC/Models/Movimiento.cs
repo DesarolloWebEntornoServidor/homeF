@@ -103,7 +103,7 @@ namespace homeFinanceMVC.Models
         }
 
         [Required(ErrorMessage = "El Valor es Necesario")]
-        [Range(1, 10000)]
+        [Range(1, 100000)]
         [DataType(DataType.Currency)]
         public decimal Valor
         {

@@ -24,12 +24,13 @@ namespace homeFinanceMVC.Models
 
             string f = String.Format("{0}-{1}-{2}", cg.FechaSaldo.Substring(6), cg.FechaSaldo.Substring(3, 2), cg.FechaSaldo.Substring(0, 2));
 
+            MySqlConnection conection = Conexion.ObtenerConexion();
             MySqlCommand comando = new MySqlCommand(string.Format("Insert into cajageneral (fechaSaldo, saldo) values ('{0}','{1}')",
-                f, vr), Conexion.ObtenerConexion());
+                f, vr), conection);
 
             int retorno = comando.ExecuteNonQuery();
-
-            Conexion.CerrarConexion();
+            comando.Dispose();
+            conection.Close();
 
             return retorno;
         }
@@ -52,12 +53,13 @@ namespace homeFinanceMVC.Models
 
             if (data.Length > 1)
                 fecha = String.Format("{0}-{1}-{2}", data[2].Substring(0, 4), data[1], data[0]);
-
-            MySqlCommand comando = new MySqlCommand(string.Format("update cajageneral set saldo = (saldo + '{0}') where fechaSaldo >= '{1}'", vr, fecha), Conexion.ObtenerConexion());
+            MySqlConnection conection = Conexion.ObtenerConexion();
+            MySqlCommand comando = new MySqlCommand(string.Format("update cajageneral set saldo = (saldo + '{0}') where fechaSaldo >= '{1}'", vr, fecha),  conection);
 
             retorno = comando.ExecuteNonQuery();
 
-            Conexion.CerrarConexion();
+            comando.Dispose();
+            conection.Close();
 
             return;
         }

@@ -9,22 +9,26 @@
     int noGenera = 0;
     if (TempData["NoGenera"] != null)
     {
-    <input hidden="hidden" value="10" id="delCancelado" />
+        <input hidden="hidden" value="10" id="delCancelado" />
         noGenera = 1;
     }
-    if (ViewBag.Saldo != null) {
+    if (ViewBag.Saldo != null)
+    {
         saldo = ViewBag.Saldo;
     }
- }
+
+
+}
 
 @if (noGenera > 0)
 {
     <div class="alert alert-danger" role="alert">
-        NO Existen Valores en ese Periodo para Generar el Grafico!
+        NO Existen Valores en ese Periodo para Mostrar !!!
     </div>
 
     <div style="margin-left:20%;">
-        @Html.ActionLink("Volver", "Grafico", "Home", null, new { @class = "btn btn-info" })
+        @Html.ActionLink("Volver", "LibroCaja", "Movimiento", null, new { @class = "btn btn-info" })
+
     </div>
 }
 else
@@ -39,9 +43,9 @@ else
 
     <div class="table-responsive" style="width:95%;margin-left:2.5%">
         <table class="table table-condensed table-hover table-responsive">
-            @if (noGenera == 0)
+            @if (noGenera > 0)
             {
-  
+
             }
             else
             {
@@ -94,4 +98,7 @@ else
         </table>
     </div>
 
+    <div style="margin-top:15px;margin-left:20%;">
+        @Html.ActionLink("Volver", "LibroCaja", "Movimiento", null, new { @class = "btn btn-info" })
+    </div>
 }

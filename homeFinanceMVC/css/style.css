@@ -5648,16 +5648,16 @@ ul li a:focus {
   display: none
 }
 
-#mimin-mobile a{
-  color: #fff;
-  padding-right: 0px;
+#mimin-mobile a {
+    color: #6685c4;
+    padding-right: 0px;
 }
 #mimin-mobile a:hover{
   background:none !important;
 }
-#mimin-mobile .tree{
-  padding-left: 10px;
-  background: #ef5949;
+#mimin-mobile .tree {
+    padding-left: 10px;
+    background: #497add;
 }
 .sub-mimin-mobile-menu-list {
   display: none;

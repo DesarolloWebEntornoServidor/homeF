@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using Rotativa;
 using System.Web.Mvc;
 using homeFinanceMVC.Models;
 using PagedList;
@@ -15,6 +14,8 @@ namespace homeFinanceMVC.Views
 
         private UsuarioDAO uDAO = new UsuarioDAO();
         private Usuario u = new Usuario();
+
+        List<Cuenta> listaCuentas = null;
 
         public ActionResult InsertarCuenta()
         {
@@ -143,5 +144,46 @@ namespace homeFinanceMVC.Views
 
         }
 
+        public ActionResult ImprimirCuentas(int? page)
+        {
+
+            int pageSize = 50000;
+            int pageNumber = (page ?? 1);
+
+            return View(ccDAO.ListarCuentas().ToPagedList(pageNumber, pageSize));
+        }
+
+        //public ActionResult GenerarPDF()
+        //{
+        //    var q = new ActionAsPdf("ImprimirCuentas");
+
+        //    return q;
+        //}
+
+        private RelatorioDuplicata getRelatorio()
+        {
+            var rpt = new RelatorioDuplicata();
+            rpt.BasePath = Server.MapPath("/");
+
+            rpt.PageTitle = "Lista de Cuentas";
+            rpt.PageTitle = "Lista de Cuentas";
+            rpt.ImprimirCabecalhoPadrao = true;
+            rpt.ImprimirRodapePadrao = true;
+
+            return rpt;
+        }
+        public ActionResult Preview()
+        {
+            var rpt = getRelatorio();
+
+            return File(rpt.GetOutput().GetBuffer(), "application/pdf");
+        }
+
+        //public FileResult BaixarPDF()
+        //{
+        //    var rpt = getRelatorio();
+
+        //    return File(rpt.GetOutput().GetBuffer(), "application/pdf", "Documento.pdf");
+        //}
     }
 }

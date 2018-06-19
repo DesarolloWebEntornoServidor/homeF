@@ -49,6 +49,12 @@
     <Reference Include="DotLiquid, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DotLiquid.1.0.0\lib\NET40\DotLiquid.dll</HintPath>
     </Reference>
+    <Reference Include="IisConfiguration, Version=1.0.5710.23613, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IisConfiguration.1.0.5710.23613\lib\net451\IisConfiguration.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13\lib\itextsharp.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
@@ -58,6 +64,10 @@
     </Reference>
     <Reference Include="Microsoft.SharePoint.Client.Runtime, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.SharePoint.Client.14.0.4762.1000\lib\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Administration, Version=7.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Administration.7.0.0.0\lib\net20\Microsoft.Web.Administration.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="MvcValidationExtensions, Version=1.1.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MvcValidationExtensions.1.1.4.0\lib\net45\MvcValidationExtensions.dll</HintPath>
@@ -69,6 +79,9 @@
     </Reference>
     <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Rotativa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rotativa.1.7.3\lib\net461\Rotativa.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -195,6 +208,8 @@
     <Compile Include="Models\LogDAO.cs" />
     <Compile Include="Models\Movimiento.cs" />
     <Compile Include="Models\MovimientoDAO.cs" />
+    <Compile Include="Models\RelatorioDuplicata.cs" />
+    <Compile Include="Models\TNEReport.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Models\UsuarioDAO.cs" />
     <Compile Include="Models\Utilitarios.cs" />
@@ -205,6 +220,10 @@
     <Compile Include="Views\UsuarioController.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\packages\wkhtmltopdf.msvc.64.exe.0.12.4\tools\wkhtmltopdf.exe">
+      <Link>wkhtmltopdf.exe</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\animate.min.css" />
     <Content Include="Content\bootstrap-sortable.css" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -311,6 +330,9 @@
     <Content Include="imagenes\edit.png" />
     <Content Include="imagenes\homefinance2.ico" />
     <Content Include="imagenes\homefinance2.png" />
+    <Content Include="imagenes\homefinance200px.png" />
+    <Content Include="imagenes\homefinance50px.png" />
+    <Content Include="imagenes\homefinance80px.png" />
     <Content Include="imagenes\left-bg.png" />
     <Content Include="imagenes\loader.gif" />
     <Content Include="imagenes\menu.png" />
@@ -318,7 +340,12 @@
     <Content Include="imagenes\textura_azul.jpg" />
     <Content Include="imagenes\textura_blanca.jpg" />
     <Content Include="imagenes\textura_bordeada.jpg" />
+    <Content Include="readme.txt" />
     <Content Include="Readme_UpdateControls_Snippets.txt" />
+    <Content Include="Rotativa\help-wkhtmltoimage.txt" />
+    <Content Include="Rotativa\help-wkhtmltopdf.txt" />
+    <Content Include="Rotativa\wkhtmltoimage.exe" />
+    <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\bootstrap-sortable.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -383,6 +410,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="App_Browsers\qt.browser" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\PublicacionViaFtp.pubxml" />
@@ -461,9 +489,13 @@
     <Content Include="Views\Login\Registrar.cshtml" />
     <Content Include="Views\Home\IndexUsuario.cshtml" />
     <Content Include="Views\Shared\_LayoutUsuario.cshtml" />
+    <Content Include="Views\Usuario\Imprimir.cshtml" />
+    <Content Include="Views\Cuenta\ImprimirCuentas.cshtml" />
+    <Content Include="Views\Evento\ImprimirEventos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\PDFs\" />
     <Folder Include="imagenes\FotosUsuarios\" />
   </ItemGroup>
   <ItemGroup>

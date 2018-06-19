@@ -11,13 +11,14 @@ namespace homeFinanceMVC.Models
         public int Insertar(Log l)
         {
             int retorno = 0;
-
+            MySqlConnection conection = Conexion.ObtenerConexion();
             MySqlCommand comando = new MySqlCommand(string.Format("Insert into logs (logDesc) values ('{0}')",
-                l.LogDesc), Conexion.ObtenerConexion());
+                l.LogDesc), conection);
 
             retorno = comando.ExecuteNonQuery();
 
-            Conexion.CerrarConexion();
+            comando.Dispose();
+            conection.Close();
 
             return retorno;
         }
@@ -27,24 +28,26 @@ namespace homeFinanceMVC.Models
             int retorno = 0;
             try
             {
-                MySqlCommand comando = new MySqlCommand(string.Format("delete FROM logs where idLog={0}", id), Conexion.ObtenerConexion());
+                MySqlConnection conection = Conexion.ObtenerConexion();
+                MySqlCommand comando = new MySqlCommand(string.Format("delete FROM logs where idLog={0}", id), conection);
 
                 retorno = comando.ExecuteNonQuery();
+            comando.Dispose();
+            conection.Close();
             }
             catch (Exception)
             {
                 
             }
 
-            Conexion.CerrarConexion();
 
             return retorno;
         }
         public List<Log> ListarLogs()
         {
             List<Log> lista = new List<Log>();
-
-            MySqlCommand comando = new MySqlCommand(String.Format("select idLog, logDesc, fechaLog from logs order by fechaLog"), Conexion.ObtenerConexion());
+            MySqlConnection conection = Conexion.ObtenerConexion();
+            MySqlCommand comando = new MySqlCommand(String.Format("select idLog, logDesc, fechaLog from logs order by fechaLog"), conection);
             MySqlDataReader codigos = comando.ExecuteReader();
             while (codigos.Read())
             {
@@ -56,7 +59,8 @@ namespace homeFinanceMVC.Models
                 lista.Add(l);
             }
 
-            Conexion.CerrarConexion();
+            comando.Dispose();
+            conection.Close();
 
             return lista;
         }

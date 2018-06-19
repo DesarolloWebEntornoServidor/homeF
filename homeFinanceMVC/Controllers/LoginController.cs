@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Net.Mail;
 using System.Web.Mvc;
 using homeFinanceMVC.Models;
 //using Datos.Entidades;
@@ -93,6 +94,35 @@ namespace homeFinanceMVC.Controllers
             }
 
             TempData["Reg"] = "Usuario Registrado !!!";
+
+            try
+            {
+                MailMessage correo = new MailMessage();
+                correo.From = new MailAddress("soporte@homefinanceweb.es");
+                correo.To.Add("info@railtoncardoso.com");
+                correo.Subject = "Nuevo usuario Registrado";
+                correo.Body = "Se ha Registrado en la Aplicación, el Usuario: " + usuario.Nombre + " Correo: " + usuario.Email;
+                correo.IsBodyHtml = true;
+                correo.Priority = MailPriority.Normal;
+
+                SmtpClient smtp = new SmtpClient();
+                smtp.Host = "smtp.1and1.es";
+                smtp.Port = 25;
+                smtp.EnableSsl = true;
+                smtp.UseDefaultCredentials = true;
+                string cuentaCorreo = "soporte@homefinanceweb.es";
+                string passCorreo = "homefinance";
+
+                smtp.Credentials = new System.Net.NetworkCredential(cuentaCorreo, passCorreo);
+
+                smtp.Send(correo);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Email no Enviado" + ex);
+                TempData["errorCorreo"] = "Email error";
+            }
 
             return RedirectToAction("Login", "Login");
         }

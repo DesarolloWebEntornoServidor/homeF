@@ -15,6 +15,10 @@
     {
         <input hidden="hidden" value="10" id="mens" />
     }
+    if (TempData["formatoImagen"] != null)
+    {
+        <input hidden="hidden" value="10" id="mensImagen" />
+    }
 }
 
 <div class="alert alert-info" role="alert">
@@ -42,6 +46,14 @@
                     <div class="col-md-10">
                         @Html.TextBoxFor(model => model.Login, new { @class = "form-control inputstl" })
                         @Html.ValidationMessageFor(model => model.Login, null, new { @class = "label label-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Correo</label>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control inputstl" })
+                        @Html.ValidationMessageFor(model => model.Email, null, new { @class = "label label-danger" })
                     </div>
                 </div>
 
@@ -108,6 +120,13 @@
             });
         </script>
 
+        <script>
+            $(document).ready(function () {
+                if ($("#mensImagen").val().length > 0) {
+                    swal("error!", "La imagen debe ser jpg o png!", "error");
+                }
+            });
+        </script>
     }
 
     <style>

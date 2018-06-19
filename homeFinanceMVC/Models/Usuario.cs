@@ -17,6 +17,7 @@ namespace homeFinanceMVC.Models
         int situacion;
         string ruta;
         byte[] foto;
+        string email;
 
         public Usuario()
         {
@@ -32,7 +33,17 @@ namespace homeFinanceMVC.Models
             this.ruta = ruta;
             this.foto = foto;
         }
-
+        public Usuario(string nombre, string login, string password, int tipo, int situacion, string ruta, byte[] foto, string email)
+        {
+            this.nombre = nombre;
+            this.login = login;
+            this.password = password;
+            this.tipo = tipo;
+            this.situacion = situacion;
+            this.ruta = ruta;
+            this.foto = foto;
+            this.email = email;
+        }
         public Usuario(string nombre)
         {
             this.nombre = nombre;
@@ -155,6 +166,22 @@ namespace homeFinanceMVC.Models
             set
             {
                 foto = value;
+            }
+        }
+
+        // [RegularExpression(@"\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b")]
+    [Required(ErrorMessage = "La Dirección de Correo es Obligatorio")]
+    [RegularExpression(@"^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$", ErrorMessage = "Debes Inserir un Correo Valido)")]
+    public string Email
+        {
+            get
+            {
+                return email;
+            }
+
+            set
+            {
+                email = value;
             }
         }
 

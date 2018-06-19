@@ -16,11 +16,13 @@ namespace homeFinanceMVC.Models
 
             try
             {
-                MySqlCommand comando = new MySqlCommand(string.Format("Insert into usuarios (login, password, nombre, tipo, situacion, ruta, foto) values ('{0}','{1}','{2}','{3}','{4}','{5}','{6}')",
-                  u.Login, Utilitarios.Encriptar(u.Password), u.Nombre, u.Tipo, u.Situacion, u.Ruta, u.Foto), Conexion.ObtenerConexion());
+                MySqlConnection conection = Conexion.ObtenerConexion();
+                MySqlCommand comando = new MySqlCommand(string.Format("Insert into usuarios (login, password, nombre, tipo, situacion, ruta, foto, email) values ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}')",
+                  u.Login, Utilitarios.Encriptar(u.Password), u.Nombre, u.Tipo, u.Situacion, u.Ruta, u.Foto, u.Email), conection);
 
                 retorno = comando.ExecuteNonQuery();
-
+            comando.Dispose();
+            conection.Close();
             }
             catch (Exception)
             {
@@ -28,7 +30,7 @@ namespace homeFinanceMVC.Models
                 return 0;
             }
 
-            Conexion.CerrarConexion();
+           
 
             return retorno;
         }
@@ -36,13 +38,14 @@ namespace homeFinanceMVC.Models
         public int ModificarUsuario(Usuario u) // Modificar Usuario // 
         {
             int retorno = 0;
-
-            MySqlCommand comando = new MySqlCommand(string.Format("update usuarios set login = '{0}', password = '{1}', nombre = '{2}', tipo = '{3}', situacion = '{4}', ruta = '{5}', foto = '{6}' where idUsuario = " +
-                "{7}", u.Login, Utilitarios.Encriptar(u.Password), u.Nombre, u.Tipo, u.Situacion, u.Ruta, u.Foto, u.IdUsuario), Conexion.ObtenerConexion());
+            MySqlConnection conection = Conexion.ObtenerConexion();
+            MySqlCommand comando = new MySqlCommand(string.Format("update usuarios set login = '{0}', password = '{1}', nombre = '{2}', tipo = '{3}', situacion = '{4}', ruta = '{5}', foto = '{6}', email = '{7}' where idUsuario = " +
+                "{8}", u.Login, Utilitarios.Encriptar(u.Password), u.Nombre, u.Tipo, u.Situacion, u.Ruta, u.Foto,u.Email, u.IdUsuario), conection);
 
             retorno = comando.ExecuteNonQuery();
 
-            Conexion.CerrarConexion();
+            comando.Dispose();
+            conection.Close();
 
             return retorno;
         }
@@ -50,8 +53,8 @@ namespace homeFinanceMVC.Models
         public List<Usuario> ListarUsuarios()
         {
             List<Usuario> lista = new List<Usuario>();
-
-            MySqlCommand comando = new MySqlCommand(String.Format("select idUsuario,nombre,login,tipo, situacion, ruta, foto from usuarios where tipo < 5 order by nombre"), Conexion.ObtenerConexion());
+            MySqlConnection conection = Conexion.ObtenerConexion();
+            MySqlCommand comando = new MySqlCommand(String.Format("select idUsuario,nombre,login,tipo, situacion, ruta, email from usuarios where tipo < 5 order by nombre"), conection);
             MySqlDataReader codigos = comando.ExecuteReader();
             while (codigos.Read())
             {
@@ -71,19 +74,21 @@ namespace homeFinanceMVC.Models
                     usus.Ruta = "";
                 }
 
-                Conexion.CerrarConexion();
+                usus.Email = codigos.GetString(6);
+
 
                 lista.Add(usus);
             }
-
+            comando.Dispose();
+            conection.Close();
             return lista;
         }
 
         public Usuario ObtenerUsuario(string login)
         {
             Usuario usus = new Usuario();
-
-            MySqlCommand comando = new MySqlCommand(String.Format("select idUsuario, nombre, login, password, tipo, situacion, ruta  from usuarios where login='" + login + "'"), Conexion.ObtenerConexion());
+            MySqlConnection conection = Conexion.ObtenerConexion();
+            MySqlCommand comando = new MySqlCommand(String.Format("select idUsuario, nombre, login, password, tipo, situacion, ruta, email  from usuarios where login='" + login + "'"), conection);
             MySqlDataReader codigos = comando.ExecuteReader();
             while (codigos.Read())
             {
@@ -94,10 +99,12 @@ namespace homeFinanceMVC.Models
                 usus.Tipo = codigos.GetInt32(4);
                 usus.Situacion = codigos.GetInt32(5);
                 usus.Ruta = codigos.GetString(6);
+                usus.Email = codigos.GetString(7);
 
             }
 
-            Conexion.CerrarConexion();
+            comando.Dispose();
+            conection.Close();
 
             return usus;
         }
@@ -105,8 +112,8 @@ namespace homeFinanceMVC.Models
         public int verificaUsuario(string usuario, string pass) // Logear //
         {
             MySqlCommand cmd = new MySqlCommand();
-
-            cmd.Connection = Conexion.ObtenerConexion();
+            MySqlConnection conection = Conexion.ObtenerConexion();
+            cmd.Connection = conection;
 
             if(cmd.Connection == null)
             {
@@ -129,7 +136,8 @@ namespace homeFinanceMVC.Models
                 return 0;
             }
 
-            Conexion.CerrarConexion();
+            cmd.Dispose();
+            conection.Close();
 
             return 0;
         }
@@ -139,25 +147,27 @@ namespace homeFinanceMVC.Models
             int retorno = 0;
             try
             {
-                MySqlCommand comando = new MySqlCommand(string.Format("delete FROM usuarios where idUsuario={0}", id), Conexion.ObtenerConexion());
+                MySqlConnection conection = Conexion.ObtenerConexion();
+                MySqlCommand comando = new MySqlCommand(string.Format("delete FROM usuarios where idUsuario={0}", id), conection);
 
-                retorno = comando.ExecuteNonQuery();
+                retorno = comando.ExecuteNonQuery();  comando.Dispose();
+            conection.Close();
+
             }
             catch (Exception)
             {
                
             }
 
-            Conexion.CerrarConexion();
-
+          
             return retorno;
         }
 
         public List<Usuario> YaExiste(string usuario, string alias)
         {
             List<Usuario> lista = new List<Usuario>();
-
-            MySqlCommand comando = new MySqlCommand(String.Format("select idUsuario, nombre from usuarios where login = '{0}' or alias = '{1}'", usuario, alias), Conexion.ObtenerConexion());
+            MySqlConnection conection = Conexion.ObtenerConexion();
+            MySqlCommand comando = new MySqlCommand(String.Format("select idUsuario, nombre from usuarios where login = '{0}' or alias = '{1}'", usuario, alias), conection);
             MySqlDataReader codigos = comando.ExecuteReader();
 
             Usuario usus = new Usuario();
@@ -171,7 +181,8 @@ namespace homeFinanceMVC.Models
                 lista.Add(usus);
             }
 
-            Conexion.CerrarConexion();
+            comando.Dispose();
+            conection.Close();
 
             return lista;
         }
@@ -182,9 +193,12 @@ namespace homeFinanceMVC.Models
             int retorno = 0;
             try
             {
-                MySqlCommand comando = new MySqlCommand(string.Format("delete FROM usuarios where idUsuario={0}", codUsuario), Conexion.ObtenerConexion());
+                MySqlConnection conection = Conexion.ObtenerConexion();
+                MySqlCommand comando = new MySqlCommand(string.Format("delete FROM usuarios where idUsuario={0}", codUsuario), conection);
 
                 retorno = comando.ExecuteNonQuery();
+                comando.Dispose();
+            conection.Close();
             }
             catch (Exception)
             {
@@ -192,7 +206,7 @@ namespace homeFinanceMVC.Models
                 
             }
 
-            Conexion.CerrarConexion();
+         
 
             return retorno;
 
@@ -201,8 +215,8 @@ namespace homeFinanceMVC.Models
         public Usuario ObtenerUsuarioPorId(int idUsu)
         {
             Usuario usus = new Usuario();
-
-            MySqlCommand comando = new MySqlCommand(String.Format("select idUsuario, nombre, login, password, tipo, situacion, ruta from usuarios where idUsuario='" + idUsu + "'"), Conexion.ObtenerConexion());
+            MySqlConnection conection = Conexion.ObtenerConexion();
+            MySqlCommand comando = new MySqlCommand(String.Format("select idUsuario, nombre, login, password, tipo, situacion, ruta, email from usuarios where idUsuario='" + idUsu + "'"), conection);
             MySqlDataReader codigos = comando.ExecuteReader();
             while (codigos.Read())
             {
@@ -213,10 +227,12 @@ namespace homeFinanceMVC.Models
                 usus.Tipo = codigos.GetInt32(4);
                 usus.Situacion = codigos.GetInt32(5);
                 usus.Ruta = codigos.GetString(6);
+                usus.Email = codigos.GetString(7);
 
             }
 
-            Conexion.CerrarConexion();
+            comando.Dispose();
+            conection.Close();
 
             return usus;
         }

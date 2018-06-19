@@ -13,13 +13,14 @@ namespace homeFinanceMVC.Models
         public int Insertar(Cuenta c)
         {
            int retorno = 0;
-
+            MySqlConnection conection = Conexion.ObtenerConexion();
             MySqlCommand comando = new MySqlCommand(string.Format("Insert into cuentas (descCuenta, idUsuario) values ('{0}','{1}')",
-                c.DescCuenta, c.IdUsuario), Conexion.ObtenerConexion());
+                c.DescCuenta, c.IdUsuario), conection);
 
             retorno = comando.ExecuteNonQuery();
 
-            Conexion.CerrarConexion();
+            comando.Dispose();
+            conection.Close();
 
             return retorno;
         }
@@ -27,8 +28,8 @@ namespace homeFinanceMVC.Models
         public Cuenta ObtenerCuenta(int id)
         {
             Cuenta cc = new Cuenta();
-
-            MySqlCommand comando = new MySqlCommand(String.Format("select idCuenta, descCuenta, idUsuario from cuentas where idCuenta='" + id + "'"), Conexion.ObtenerConexion());
+            MySqlConnection conection = Conexion.ObtenerConexion();
+            MySqlCommand comando = new MySqlCommand(String.Format("select idCuenta, descCuenta, idUsuario from cuentas where idCuenta='" + id + "'"), conection);
             MySqlDataReader codigos = comando.ExecuteReader();
             while (codigos.Read())
             {
@@ -37,7 +38,8 @@ namespace homeFinanceMVC.Models
                 cc.IdUsuario = codigos.GetInt32(2);
             }
 
-            Conexion.CerrarConexion();
+            comando.Dispose();
+            conection.Close();
 
             return cc;
         }
@@ -47,30 +49,35 @@ namespace homeFinanceMVC.Models
             int retorno = 0;
             try
             {
-                MySqlCommand comando = new MySqlCommand(string.Format("delete FROM cuentas where idCuenta={0}", id), Conexion.ObtenerConexion());
+                MySqlConnection conection = Conexion.ObtenerConexion();
+                MySqlCommand comando = new MySqlCommand(string.Format("delete FROM cuentas where idCuenta={0}", id), conection);
 
                 retorno = comando.ExecuteNonQuery();
+
+            comando.Dispose();
+            conection.Close();
+
             }
             catch (Exception)
             {
                 
             }
 
-            Conexion.CerrarConexion();
-
+           
             return retorno;
         }
 
         public int Actualizar(Cuenta cc)
         {
             int retorno = 0;
-
+            MySqlConnection conection = Conexion.ObtenerConexion();
             MySqlCommand comando = new MySqlCommand(string.Format("update cuentas set descCuenta = '{0}', idUsuario = '{1}' where idCuenta={2}",
-                cc.DescCuenta, cc.IdUsuario, cc.IdCuenta), Conexion.ObtenerConexion());
+                cc.DescCuenta, cc.IdUsuario, cc.IdCuenta), conection);
 
             retorno = comando.ExecuteNonQuery();
 
-            Conexion.CerrarConexion();
+            comando.Dispose();
+            conection.Close();
 
             return retorno;
         }
@@ -80,19 +87,31 @@ namespace homeFinanceMVC.Models
         {
             List<Cuenta> lista = new List<Cuenta>();
 
-            MySqlCommand comando = new MySqlCommand(String.Format("select * from cuentas where idUsuario > 0 order by descCuenta"), Conexion.ObtenerConexion());
-            MySqlDataReader codigos = comando.ExecuteReader();
-            while (codigos.Read())
+            MySqlConnection conection = Conexion.ObtenerConexion();
+            MySqlCommand comando = null;
+            try
             {
-                Cuenta evs = new Cuenta();
-                evs.IdCuenta = codigos.GetInt32(0);
-                evs.DescCuenta = codigos.GetString(1);
-                evs.IdUsuario = codigos.GetInt32(2);
+                comando = new MySqlCommand(String.Format("select * from cuentas where idUsuario > 0 order by descCuenta"), conection);
+                MySqlDataReader codigos = comando.ExecuteReader();
+                while (codigos.Read())
+                {
+                    Cuenta evs = new Cuenta();
+                    evs.IdCuenta = codigos.GetInt32(0);
+                    evs.DescCuenta = codigos.GetString(1);
+                    evs.IdUsuario = codigos.GetInt32(2);
 
-                lista.Add(evs);
+                    lista.Add(evs);
+                }
             }
+            catch (Exception)
+            {
 
-            Conexion.CerrarConexion();
+                throw;
+            }
+          
+
+            comando.Dispose();
+            conection.Close();
 
             return lista;
         }
@@ -100,20 +119,33 @@ namespace homeFinanceMVC.Models
         public List<Cuenta> ListarCuentasPorId(int id)
         {
             List<Cuenta> lista = new List<Cuenta>();
-
-            MySqlCommand comando = new MySqlCommand(String.Format("select * from cuentas where idUsuario={0}", id), Conexion.ObtenerConexion());
-            MySqlDataReader codigos = comando.ExecuteReader();
-            while (codigos.Read())
+            MySqlConnection conection = Conexion.ObtenerConexion();
+            try
             {
-                Cuenta evs = new Cuenta();
-                evs.IdCuenta = codigos.GetInt32(0);
-                evs.DescCuenta = codigos.GetString(1);
-                evs.IdUsuario = codigos.GetInt32(2);
+                MySqlCommand comando = new MySqlCommand(String.Format("select * from cuentas where idUsuario={0}", id), conection);
+                MySqlDataReader codigos = comando.ExecuteReader();
+                while (codigos.Read())
+                {
+                    Cuenta evs = new Cuenta();
+                    evs.IdCuenta = codigos.GetInt32(0);
+                    evs.DescCuenta = codigos.GetString(1);
+                    evs.IdUsuario = codigos.GetInt32(2);
 
-                lista.Add(evs);
+                    lista.Add(evs);
+                }
             }
+            catch (Exception)
+            {
 
-            Conexion.CerrarConexion();
+                throw;
+            }
+            finally
+            {
+               // comando.Dispose();
+                conection.Close();
+            }
+           
+
 
             return lista;
         }

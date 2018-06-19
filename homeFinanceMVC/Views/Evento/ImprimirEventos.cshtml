@@ -1,0 +1,61 @@
+﻿@model PagedList.IPagedList<homeFinanceMVC.Models.EvActivoPasivo>
+@using PagedList.Mvc;
+@using homeFinanceMVC.Models;
+@{
+    if (Convert.ToInt32(Session["tipoUsu"]) == 1)
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutUsuario.cshtml";
+    }
+ 
+}
+<div class="alert alert-info" role="alert">
+    <h3>Lista de Eventos</h3>
+</div>
+
+<div class="table-responsive" style="width:95%;margin-left:2.5%">
+    <table class="table table-condensed table-hover sortable table-responsive">
+        @if (Model.Count() == 0)
+        {
+            <tr>
+                <td colspan="5" class="text-center">No hay Eventos a mostrar !!!</td>
+            </tr>
+        }
+        else
+        {
+            <thead>
+                <tr class="" style="background-color:cornflowerblue;color:darkblue">
+                    <th data-defaultsign="_19">ID</th>
+                    <th data-defaultsign="AZ">Descripción</th>
+                    <th data-defaultsign="AZ">Tipo</th>
+                </tr>
+            </thead>
+
+            string descTipo = "";
+
+            foreach (var item in Model)
+            {
+                if (@item.TipoEvento == "C")
+                {
+                    descTipo = "Credito";
+                }
+                else
+                {
+                    descTipo = "Debito";
+                }
+
+                <tr>
+                    <td>@item.IdEvento</td>
+                    <td>@item.DescEvento</td>
+                    <td>@descTipo</td>
+                </tr>
+            }
+        }
+    </table>
+</div>
+<div style="margin-left:40%;">
+    @Html.ActionLink("Generar PDF", "Preview", "Evento", null, new { @class = "btn btn-primary" })
+</div>

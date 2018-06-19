@@ -1,0 +1,48 @@
+﻿@model PagedList.IPagedList<homeFinanceMVC.Models.Cuenta>
+@using PagedList.Mvc;
+@using homeFinanceMVC.Models;
+
+@{
+        Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="alert alert-info" role="alert">
+    <h3>Lista de Cuentas</h3>
+</div>
+
+<div class="table-responsive" style="width:95%;margin-left:2.5%">
+    <table class="table table-responsive">
+        @if (Model == null)
+        {
+            <tr>
+                <td colspan="5" class="text-center">No hay Cuentas para Mostrar !!!</td>
+            </tr>
+        }
+        else
+        {
+            <thead>
+                <tr class="" style="background-color:cornflowerblue;color:darkblue">
+                    <th data-defaultsign="_19">ID</th>
+                    <th data-defaultsign="AZ">Cuenta</th>
+                    <th data-defaultsign="AZ">Usuario Responsable</th>
+                </tr>
+            </thead>
+
+            foreach (var item in Model)
+            {
+                UsuarioDAO uDAO = new UsuarioDAO();
+                Usuario u = uDAO.ObtenerUsuarioPorId(item.IdUsuario);
+
+                <tr>
+                    <td>@item.IdCuenta</td>
+                    <td>@item.DescCuenta</td>
+                    <td>@u.Nombre</td>
+                </tr>
+            }
+        }
+    </table>
+</div>
+<div style="margin-left:40%;">
+    @Html.ActionLink("Generar PDF", "Preview", "Cuenta", null, new { @class = "btn btn-primary" })
+</div>

@@ -49,6 +49,14 @@
                 </div>
 
                 <div class="form-group">
+                    <label class="control-label col-md-2">Correo</label>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control inputstl" })
+                        @Html.ValidationMessageFor(model => model.Email, null, new { @class = "label label-danger" })
+                    </div>
+                </div>
+                
+                <div class="form-group">
                     <label class="control-label col-md-2">Contraseña</label>
                     <div class="col-md-10">
                         @Html.PasswordFor(x => x.Password, new { @class = "form-control inputstl bor", value = Utilitarios.Desencriptar(Model.Password) })
@@ -67,19 +75,19 @@
                     <label class="control-label col-md-2">Tipo</label>
                     <div class="col-md-10">
                         @if (Model.Tipo == 2)
-                        {
-                            @Html.RadioButtonFor(model => model.Tipo, "2", new { Checked = "checked" })
-                            @Html.Label("Usuario", new { @class = "marg" })
-                            @Html.RadioButtonFor(model => model.Tipo, "1", new { @class = "marg" })
-                            @Html.Label("Administrador")
-                        }
-                        else
-                        {
-                            @Html.RadioButtonFor(model => model.Tipo, "2", new { @class = "marg" })
-                            @Html.Label("Usuario", new { @class = "marg" })
-                            @Html.RadioButtonFor(model => model.Tipo, "1", new { Checked = "checked" })
-                            @Html.Label("Administrador")
-                        }
+            {
+                @Html.RadioButtonFor(model => model.Tipo, "2", new { Checked = "checked" })
+                @Html.Label("Usuario", new { @class = "marg" })
+                @Html.RadioButtonFor(model => model.Tipo, "1", new { @class = "marg" })
+                @Html.Label("Administrador")
+}
+else
+{
+            @Html.RadioButtonFor(model => model.Tipo, "2", new { @class = "marg" })
+            @Html.Label("Usuario", new { @class = "marg" })
+            @Html.RadioButtonFor(model => model.Tipo, "1", new { Checked = "checked" })
+            @Html.Label("Administrador")
+}
                     </div>
                 </div>
 
@@ -87,19 +95,19 @@
                     <label class="control-label col-md-2">Situación</label>
                     <div class="col-md-10">
                         @if (Model.Situacion == 1)
-                        {
-                            @Html.RadioButtonFor(model => model.Situacion, "1", new { Checked = "checked" })
-                            @Html.Label("Activo  ", new { @class = "marg" })
-                            @Html.RadioButtonFor(model => model.Situacion, "0")
-                            @Html.Label("Inactivo")
-                        }
-                        else
-                        {
-                            @Html.RadioButtonFor(model => model.Situacion, "1")
-                            @Html.Label("Activo  ", new { @class = "marg" })
-                            @Html.RadioButtonFor(model => model.Situacion, "0", new { Checked = "checked" })
-                            @Html.Label("Inactivo")
-                        }
+            {
+                @Html.RadioButtonFor(model => model.Situacion, "1", new { Checked = "checked" })
+                @Html.Label("Activo  ", new { @class = "marg" })
+                @Html.RadioButtonFor(model => model.Situacion, "0")
+                @Html.Label("Inactivo")
+}
+else
+{
+            @Html.RadioButtonFor(model => model.Situacion, "1")
+            @Html.Label("Activo  ", new { @class = "marg" })
+            @Html.RadioButtonFor(model => model.Situacion, "0", new { Checked = "checked" })
+            @Html.Label("Inactivo")
+}
                     </div>
                 </div>
 
@@ -116,13 +124,13 @@
                 <button type="submit" class="btn btn-primary">Guardar</button>
 
                 @if (Convert.ToInt32(Session["tipoUsu"]) == 1)
-                {
-                    @Html.ActionLink("Cancelar", "ManipularDatos", "Usuario", null, new { @class = "btn btn-warning" })
-                }
-                else
-                {
-                    @Html.ActionLink("Cancelar", "IndexUsuario", "Home", null, new { @class = "btn btn-warning" })
-                }
+    {
+            @Html.ActionLink("Cancelar", "ManipularDatos", "Usuario", null, new { @class = "btn btn-warning" })
+}
+else
+{
+            @Html.ActionLink("Cancelar", "IndexUsuario", "Home", null, new { @class = "btn btn-warning" })
+}
             </fieldset>
 
         </div>

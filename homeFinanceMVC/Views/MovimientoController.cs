@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Rotativa;
 using System.Web.Mvc;
 using homeFinanceMVC.Models;
 using PagedList;
@@ -10,6 +11,7 @@ namespace homeFinanceMVC.Views
 {
     public class MovimientoController : Controller
     {
+        private const int V = 0;
         private EvActivoPasivoDAO evDAO = new EvActivoPasivoDAO();
         private EvActivoPasivo ev = new EvActivoPasivo();
 
@@ -69,9 +71,17 @@ namespace homeFinanceMVC.Views
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult GuardarDatos(Movimiento movimiento, FormCollection form)
         {
+            decimal verSaldoNegativo = cDAO.ConsultarSaldoActual(); // verificar se valor es mayor que saldo 
+            ev = evDAO.ObtenerEvento(movimiento.IdEvento);
+            bool saldoNegativo = false;
 
-            if (!ModelState.IsValid)
+            if (ev.TipoEvento == "D" & movimiento.Valor > verSaldoNegativo)
             {
+                saldoNegativo = true;
+            }
+
+            if (!ModelState.IsValid || saldoNegativo)
+                {
                 List<EvActivoPasivo> lEventos = new List<EvActivoPasivo>();
                 lEventos = evDAO.ListarTodosEventos();
                 ev = new EvActivoPasivo("Select un Evento");
@@ -91,6 +101,11 @@ namespace homeFinanceMVC.Views
 
                 Saldo = cDAO.ConsultarSaldoActual();
                 ViewBag.Saldo = Saldo;
+
+                if(movimiento.Valor > Saldo)
+                {
+                    TempData["sinSaldo"] = "Saldo negativo" ;
+                }
 
                 return View("Create", movimiento);
             }
@@ -216,6 +231,13 @@ namespace homeFinanceMVC.Views
             if (Convert.ToInt32(Session["tipoUsu"]) == 1)
             {
                 listaMovimientos = from s in mDAO.ListaMovimientosPorPeriodo(deForm, hastaForm) select s;
+            }
+
+            List<Object> listaLibro = mDAO.MovimientosLibro(deForm, hastaForm);
+
+            if (listaLibro.Count == 0)
+            {
+                TempData["NoGenera"] = "Sin Valores para esa Fecha";
             }
 
             int pageSize = 7;

@@ -65,6 +65,14 @@
                         <label class="active" for="euro_symbol">Confirme Contraseña</label>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">email</i>
+                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control inputstl" })
+                        @Html.ValidationMessageFor(model => model.Email, null, new { @class = "label lab" })
+                        <label for="icon_prefix2">Correo Electrónico</label>
+                    </div>
+                </div>
                 <div class="form-group">
                     <input type="hidden" class="form-control" id="tipo" name="tipo" value="2">
                 </div>

@@ -43,6 +43,7 @@
                     <th data-defaultsign="_19">ID</th>
                     <th data-defaultsign="AZ">Nombre</th>
                     <th data-defaultsign="AZ">Login</th>
+                    <th data-defaultsign="AZ">Correo Eletrónico</th>
                     <th data-defaultsign="AZ">Tipo</th>
                     <th data-defaultsort="AZ">Situación</th>
                     <th>Imagen</th>
@@ -74,27 +75,27 @@
                     descSit = "Activo";
                 }
 
-                <tr>
-                    <td>@item.IdUsuario</td>
-                    <td>@item.Nombre</td>
-                    <td>@item.Login</td>
-                    <td>@descTipo</td>
-                    <td>@descSit</td>
-                    <td width="10%"><img src="@item.Ruta" width="60%" height="auto" alt="" /></td>
-                    <td>
-                        <button class="btn btn-warning" onclick="location.href='@Url.Action("EditUsuario", "Usuario", new { id = @item.IdUsuario })'" type="button">Modificar</button>
-                    </td>
-                    <td>
-                        <a href="#myModal" class="btn btn-danger delete" data-toggle="modal" data-id="@item.IdUsuario">Eliminar</a>
-                    </td>
-                </tr>
+            <tr>
+                <td>@item.IdUsuario</td>
+                <td>@item.Nombre</td>
+                <td>@item.Login</td>
+                <td>@item.Email</td>
+                <td>@descTipo</td>
+                <td>@descSit</td>
+                <td width="10%"><img src="@item.Ruta" width="60%" height="auto" alt="" /></td>
+                <td>
+                    <button class="btn btn-warning" onclick="location.href='@Url.Action("EditUsuario", "Usuario", new { id = @item.IdUsuario })'" type="button">Modificar</button>
+                </td>
+                <td>
+                    <a href="#myModal" class="btn btn-danger delete" data-toggle="modal" data-id="@item.IdUsuario">Eliminar</a>
+                </td>
+            </tr>
             }
         }
     </table>
     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
     @Html.PagedListPager(Model, page => Url.Action("ManipularDatos", new { page }))
 </div>
-
 
 @section scripts
 {

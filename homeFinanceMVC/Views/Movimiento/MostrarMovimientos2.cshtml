@@ -31,10 +31,12 @@
         <input hidden="hidden" value="10" id="delCancelado" />
         noGenera = 1;
     }
+
     if (ViewBag.Saldo != null)
     {
         saldo = ViewBag.Saldo;
     }
+
 
 }
 
@@ -45,7 +47,7 @@
 @if (noGenera > 0)
 {
     <div class="alert alert-danger" role="alert">
-        NO Existen Valores en ese Periodo para Generar el Grafico!
+        NO Existen Valores en ese Periodo para Generar Mostrar
     </div>
 
     <div style="margin-left:20%;">

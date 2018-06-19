@@ -112,12 +112,6 @@ namespace homeFinanceMVC.Controllers
 
             var data = mDAO.ObtenerValoresDelGrafico(deForm, hastaForm, tipo);           
 
-            //if (data.Count == 0)
-            //{
-            //    TempData["mesajeGrafico"] = "Sin Valores para esa Fecha";
-            //    return RedirectToAction("Grafico", "Home");
-            //}
-
             var dataforchart = data.Select(x => new { name = x.DescMov, y = x.Valor });
 
             return Json(dataforchart, JsonRequestBehavior.AllowGet);

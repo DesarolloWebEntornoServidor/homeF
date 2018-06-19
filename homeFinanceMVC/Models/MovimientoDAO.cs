@@ -22,13 +22,14 @@ namespace homeFinanceMVC.Models
             decimal v1 = Convert.ToDecimal(vl, CultureInfo.CreateSpecificCulture("es-ES"));
 
             vl = vl.Replace(',', '.');
-
+            MySqlConnection conection = Conexion.ObtenerConexion();
             MySqlCommand comando = new MySqlCommand(string.Format("Insert into movimientos (descMov, fecha, valor, idEvento, idCuenta) values ('{0}','{1}','{2}','{3}','{4}')",
-                mov.DescMov, f , vl, mov.IdEvento, mov.IdCuenta), Conexion.ObtenerConexion());
+                mov.DescMov, f , vl, mov.IdEvento, mov.IdCuenta), conection);
 
             int retorno = comando.ExecuteNonQuery();
 
-            Conexion.CerrarConexion();
+            comando.Dispose();
+            conection.Close();
 
             return retorno;
         }
@@ -48,13 +49,14 @@ namespace homeFinanceMVC.Models
                 fecha = String.Format("{0}-{1}-{2}", data[2].Substring(0, 4), data[1], data[0]);
 
             int retorno = 0;
-
+            MySqlConnection conection = Conexion.ObtenerConexion();
             MySqlCommand comando = new MySqlCommand(string.Format("update movimientos set descMov = '{0}', fecha = '{1}', valor = '{2}', idCuenta = '{3}', idEvento = '{4}' where idMov={5}",
-                mUp.DescMov, fecha, vl, mUp.IdCuenta, mUp.IdEvento, mUp.IdMov), Conexion.ObtenerConexion());
+                mUp.DescMov, fecha, vl, mUp.IdCuenta, mUp.IdEvento, mUp.IdMov), conection);
 
             retorno = comando.ExecuteNonQuery();
 
-            Conexion.CerrarConexion();
+            comando.Dispose();
+            conection.Close();
 
             return retorno;
         }
@@ -63,10 +65,12 @@ namespace homeFinanceMVC.Models
         {
             DataSet ds = new DataSet();
             DataTable dt = new DataTable();
-            MySqlDataAdapter comando = new MySqlDataAdapter(string.Format("select * from movimientos m join evactivopasivos e on(m.idEvento=e.idEvento) join usuarios u on (m.idUsuario=u.idUsuario) where m.idUsuario={0} order by fecha", id), Conexion.ObtenerConexion());
+            MySqlConnection conection = Conexion.ObtenerConexion();
+            MySqlDataAdapter comando = new MySqlDataAdapter(string.Format("select * from movimientos m join evactivopasivos e on(m.idEvento=e.idEvento) join usuarios u on (m.idUsuario=u.idUsuario) where m.idUsuario={0} order by fecha", id), conection);
             comando.Fill(dt);
 
-            Conexion.CerrarConexion();
+            comando.Dispose();
+            conection.Close();
 
             return dt;
         }
@@ -77,9 +81,12 @@ namespace homeFinanceMVC.Models
             int retorno = 0;
             try
             {
-                MySqlCommand comando = new MySqlCommand(string.Format("delete FROM movimientos where idMov={0}", id), Conexion.ObtenerConexion());
+                MySqlConnection conection = Conexion.ObtenerConexion();
+                MySqlCommand comando = new MySqlCommand(string.Format("delete FROM movimientos where idMov={0}", id), conection);
 
                 retorno = comando.ExecuteNonQuery();
+ comando.Dispose();
+            conection.Close();
 
             }
             catch (Exception)
@@ -88,8 +95,7 @@ namespace homeFinanceMVC.Models
                 
             }
 
-            Conexion.CerrarConexion();
-
+           
             return retorno;
         }
 
@@ -100,8 +106,8 @@ namespace homeFinanceMVC.Models
             string fHasta = String.Format("{0}-{1}-{2}", hasta.Substring(6), hasta.Substring(3, 2), hasta.Substring(0, 2));
 
             List<Movimiento> lista = new List<Movimiento>();
-
-                MySqlCommand comando = new MySqlCommand(String.Format("select idMov, fecha, descMov, valor, idEvento, idCuenta from movimientos where fecha between '{0}' and '{1}' order by fecha", fDe, fHasta), Conexion.ObtenerConexion());
+            MySqlConnection conection = Conexion.ObtenerConexion();
+            MySqlCommand comando = new MySqlCommand(String.Format("select idMov, fecha, descMov, valor, idEvento, idCuenta from movimientos where fecha between '{0}' and '{1}' order by fecha", fDe, fHasta), conection);
                 MySqlDataReader codigos = comando.ExecuteReader();
                 while (codigos.Read())
                 {
@@ -116,7 +122,8 @@ namespace homeFinanceMVC.Models
                     lista.Add(mov);
                 }
 
-            Conexion.CerrarConexion();
+            comando.Dispose();
+            conection.Close();
 
             return lista;
         }
@@ -128,9 +135,9 @@ namespace homeFinanceMVC.Models
             string fHasta = String.Format("{0}-{1}-{2}", hasta.Substring(6), hasta.Substring(3, 2), hasta.Substring(0, 2));
 
             List<Movimiento> lista = new List<Movimiento>();
-
+            MySqlConnection conection = Conexion.ObtenerConexion();
             MySqlCommand comando = new MySqlCommand(String.Format("select idMov, fecha, descMov, valor, idEvento, m.idCuenta from movimientos m join cuentas c on (m.idCuenta=c.idCuenta)" +
-                " where fecha between '{0}' and '{1}' and c.idUsuario = '{2}' order by fecha", fDe, fHasta, id), Conexion.ObtenerConexion());
+                " where fecha between '{0}' and '{1}' and c.idUsuario = '{2}' order by fecha", fDe, fHasta, id), conection);
             MySqlDataReader codigos = comando.ExecuteReader();
             while (codigos.Read())
             {
@@ -145,7 +152,8 @@ namespace homeFinanceMVC.Models
                 lista.Add(mov);
             }
 
-            Conexion.CerrarConexion();
+            comando.Dispose();
+            conection.Close();
 
             return lista;
         }
@@ -156,10 +164,10 @@ namespace homeFinanceMVC.Models
             string fHasta = String.Format("{0}-{1}-{2}", hasta.Substring(6), hasta.Substring(3, 2), hasta.Substring(0, 2));
 
             List<Object> lista = new List<Object>();
-
+            MySqlConnection conection = Conexion.ObtenerConexion();
             MySqlCommand comando = new MySqlCommand(String.Format("select fecha, e.descEvento, descMov, c.descCuenta, valor, e.tipoEvento from movimientos m" +
                 " join evactivopasivos e on(m.idEvento=e.idEvento)" +
-                " join cuentas c on(m.idCuenta=c.idCuenta)  where fecha between '{0}' and '{1}' order by fecha", fDe, fHasta), Conexion.ObtenerConexion());
+                " join cuentas c on(m.idCuenta=c.idCuenta)  where fecha between '{0}' and '{1}' order by fecha", fDe, fHasta), conection);
             MySqlDataReader codigos = comando.ExecuteReader();
             while (codigos.Read())
             {
@@ -175,7 +183,8 @@ namespace homeFinanceMVC.Models
                 lista.Add(mov);
             }
 
-            Conexion.CerrarConexion();
+            comando.Dispose();
+            conection.Close();
 
             return lista;
         }
@@ -183,15 +192,16 @@ namespace homeFinanceMVC.Models
         public int ObtenerUltimoId()
         {
             Movimiento mov = new Movimiento();
-
-            MySqlCommand comando = new MySqlCommand("select max(idMov) from movimientos", Conexion.ObtenerConexion());
+            MySqlConnection conection = Conexion.ObtenerConexion();
+            MySqlCommand comando = new MySqlCommand("select max(idMov) from movimientos", conection);
             MySqlDataReader codigos = comando.ExecuteReader();
             while (codigos.Read())
             {
                 mov.IdMov = codigos.GetInt32(0);
             }
 
-            Conexion.CerrarConexion();
+            comando.Dispose();
+            conection.Close();
 
             return mov.IdMov;
         }
@@ -199,8 +209,8 @@ namespace homeFinanceMVC.Models
         public Movimiento ObtenerMovimiento(int id)
         {
             Movimiento mov = new Movimiento();
-
-            MySqlCommand comando = new MySqlCommand(String.Format("select idMov, descMov, valor, fecha, idCuenta, idEvento from movimientos where idMov='" + id + "'"), Conexion.ObtenerConexion());
+            MySqlConnection conection = Conexion.ObtenerConexion();
+            MySqlCommand comando = new MySqlCommand(String.Format("select idMov, descMov, valor, fecha, idCuenta, idEvento from movimientos where idMov='" + id + "'"), conection);
             MySqlDataReader codigos = comando.ExecuteReader();
             while (codigos.Read())
             {
@@ -212,7 +222,8 @@ namespace homeFinanceMVC.Models
                 mov.IdEvento = codigos.GetInt32(5);
             }
 
-            Conexion.CerrarConexion();
+            comando.Dispose();
+            conection.Close();
 
             return mov;
         }
@@ -225,8 +236,8 @@ namespace homeFinanceMVC.Models
             string fHasta = String.Format("{0}-{1}-{2}", hasta.Substring(6), hasta.Substring(3, 2), hasta.Substring(0, 2));
 
             List<Movimiento> lista = new List<Movimiento>();
-
-            MySqlCommand comando = new MySqlCommand(String.Format("select m.idEvento, e.descEvento, sum(m.valor) as VALOR from evactivopasivos e join movimientos m on (e.idEvento=m.idEvento) where VALOR > 0 and e.tipoEvento = '{0}' and fecha between '{1}' and '{2}'group by e.idEvento", tipo, fDe, fHasta), Conexion.ObtenerConexion());
+            MySqlConnection conection = Conexion.ObtenerConexion();
+            MySqlCommand comando = new MySqlCommand(String.Format("select m.idEvento, e.descEvento, sum(m.valor) as VALOR from evactivopasivos e join movimientos m on (e.idEvento=m.idEvento) where VALOR > 0 and e.tipoEvento = '{0}' and fecha between '{1}' and '{2}'group by e.idEvento", tipo, fDe, fHasta), conection);
             MySqlDataReader codigos = comando.ExecuteReader();
             while (codigos.Read())
             {
@@ -238,7 +249,8 @@ namespace homeFinanceMVC.Models
                 lista.Add(evs);
             }
 
-            Conexion.CerrarConexion();
+            comando.Dispose();
+            conection.Close();
 
             return lista;
         }

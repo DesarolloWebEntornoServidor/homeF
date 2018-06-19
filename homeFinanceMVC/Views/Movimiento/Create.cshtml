@@ -18,6 +18,12 @@
     {
         <input hidden="hidden" value="10" id="mens" />
     }
+    int noGenera = 0;
+    if (TempData["sinSaldo"] != null)
+    {
+        @*<input hidden="hidden" value="10" id="saldoNegativo" />*@
+        noGenera = 1;
+    }
 }
 
 <div class="alert alert-info" role="alert">
@@ -37,7 +43,12 @@
 <script src="http://code.jquery.com/jquery-1.10.2.js" language="javascript" type="text/javascript"></script>
 <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js" language="javascript" type="text/javascript"></script>
 
-
+@if (noGenera > 0)
+{
+    <div class="alert alert-danger" role="alert">
+        El Valor no Puede ser Mayor que el Saldo Actual!
+    </div>
+}
 
 @using (Html.BeginForm("GuardarDatos", "Movimiento", FormMethod.Post))
 {
@@ -100,11 +111,11 @@
                         <input type="submit" value="Guardar Datos" class="btn btn-primary" />
                         @if (Convert.ToInt32(Session["tipoUsu"]) == 1)
                         {
-                                <a class="btn btn-info" href="@Url.Action("Index", "Home")" role="button">Volver</a>
+                            <a class="btn btn-info" href="@Url.Action("Index", "Home")" role="button">Volver</a>
                         }
                         else
                         {
-                                <a class="btn btn-info" href="@Url.Action("IndexUsuario", "Home")" role="button">Volver</a>
+                            <a class="btn btn-info" href="@Url.Action("IndexUsuario", "Home")" role="button">Volver</a>
                         }
                     </div>
                 </div>
